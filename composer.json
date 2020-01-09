@@ -1,5 +1,5 @@
 {
-  "name": "santerref/moneris",
+  "name": "santerref/eCommerce-Unified-API-PHP",
   "description": "Unified PHP SDK for Moneris",
   "type": "library",
   "require": {
