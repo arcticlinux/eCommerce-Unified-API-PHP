@@ -4,30 +4,30 @@ namespace Moneris;
 
 class axRef
 {
-	private $template = array(
-		'ref01' => null,
-		'ref02' => null
-	);
+    private $template = array(
+        'ref01' => null,
+        'ref02' => null
+    );
 
-	private $data;
+    private $data;
 
-	public function __construct()
-	{
-		$this->data = array();
-	}
+    public function __construct()
+    {
+        $this->data = array();
+    }
 
-	public function setRef($ref01, $ref02)
-	{
-		$this->template['ref01'] = $ref01;
-		$this->template['ref02'] = $ref02;
+    public function setRef($ref01, $ref02)
+    {
+        $this->template['ref01'] = $ref01;
+        $this->template['ref02'] = $ref02;
 
-		array_push($this->data, $this->template);
-	}
+        array_push($this->data, $this->template);
+    }
 
-	public function getData()
-	{
-		return $this->data;
-	}
+    public function getData()
+    {
+        return $this->data;
+    }
 }
 
 

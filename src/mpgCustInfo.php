@@ -105,12 +105,14 @@ class mpgCustInfo
     private function toXML_low($template, $txnType)
     {
         $xmlString = "";
-        for ($x = 0; $x < count($this->level3data[$txnType]); $x++) {
+        $txnCount = count($this->level3data[$txnType]);
+        for ($x = 0; $x < $txnCount; $x++) {
             if ($x > 0) {
                 $xmlString .= "</$txnType><$txnType>";
             }
             $keys = array_keys($template);
-            for ($i = 0; $i < count($keys); $i++) {
+            $keyCount = count($keys);
+            for ($i = 0; $i < $keyCount; $i++) {
                 $tag = $keys[$i];
 
                 if (is_array($template[$keys[$i]])) {
