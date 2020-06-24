@@ -1,5 +1,5 @@
 {
-  "name": "crestoff/e-commerce-unified-api-php",
+  "name": "arcticlinux/e-commerce-unified-api-php",
   "description": "Unified PHP SDK for Moneris",
   "type": "library",
   "require": {
