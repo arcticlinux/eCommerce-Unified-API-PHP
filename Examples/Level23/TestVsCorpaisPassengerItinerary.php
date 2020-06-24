@@ -1,19 +1,25 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
+use Moneris\mpgVsLevel23;
+use Moneris\vsCorpai;
+use Moneris\vsCorpas;
+use Moneris\vsTripLegInfo;
 
 /**************************** Request Variables *******************************/
 
-$store_id='moneris';
-$api_token='hurgle';
+$store_id = 'moneris';
+$api_token = 'hurgle';
 //$status = 'false';
 
 /************************* Transactional Variables ****************************/
 
-$type='vscorpais';
-$cust_id='CUST13343';
-$order_id='ord-190916-11:18:28';
-$txn_number='18519-0_11';
+$type = 'vscorpais';
+$cust_id = 'CUST13343';
+$order_id = 'ord-190916-11:18:28';
+$txn_number = '18519-0_11';
 
 $ticket_number = "X9831083193";
 $passenger_name = "John Williams";
@@ -21,10 +27,10 @@ $total_fee = "0.23";
 $exchange_ticket_number = "1234567890001";
 $exchange_ticket_amount = "0.24";
 $travel_agency_code = "XH1";
-$travel_agency_name="AIR FLY";
+$travel_agency_name = "AIR FLY";
 $internet_indicator = "Y";
 $electronic_ticket_indicator = "Y";
-$vat_ref_num="XH13983189";
+$vat_ref_num = "XH13983189";
 
 $conjunction_ticket_number = array("1234567890100", "1234567890101");
 
@@ -58,10 +64,46 @@ $vsCorpai->setVatRefNum($vat_ref_num);
 //Create and set VsCorpais
 //Every Corpas can only have up to 2 TripLegInfo
 $vsTripLegInfo = array(new vsTripLegInfo(), new vsTripLegInfo());
-$vsTripLegInfo[0]->setTripLegInfo($coupon_number[0], $carrier_code1[0], $flight_number[0], $service_class[0], $orig_city_airport_code[0], $stop_over_code[0], $dest_city_airport_code[0], $fare_basis_code[0], $departure_date1[0], $departure_time[0], $arrival_time[0]);
-$vsTripLegInfo[0]->setTripLegInfo($coupon_number[1], $carrier_code1[1], $flight_number[1], $service_class[1], $orig_city_airport_code[1], $stop_over_code[1], $dest_city_airport_code[1], $fare_basis_code[1], $departure_date1[1], $departure_time[1], $arrival_time[1]);
+$vsTripLegInfo[0]->setTripLegInfo(
+	$coupon_number[0],
+	$carrier_code1[0],
+	$flight_number[0],
+	$service_class[0],
+	$orig_city_airport_code[0],
+	$stop_over_code[0],
+	$dest_city_airport_code[0],
+	$fare_basis_code[0],
+	$departure_date1[0],
+	$departure_time[0],
+	$arrival_time[0]
+);
+$vsTripLegInfo[0]->setTripLegInfo(
+	$coupon_number[1],
+	$carrier_code1[1],
+	$flight_number[1],
+	$service_class[1],
+	$orig_city_airport_code[1],
+	$stop_over_code[1],
+	$dest_city_airport_code[1],
+	$fare_basis_code[1],
+	$departure_date1[1],
+	$departure_time[1],
+	$arrival_time[1]
+);
 
-$vsTripLegInfo[1]->setTripLegInfo($coupon_number[2], $carrier_code1[2], $flight_number[2], $service_class[2], $orig_city_airport_code[2], $stop_over_code[2], $dest_city_airport_code[2], $fare_basis_code[2], $departure_date1[2], $departure_time[2], $arrival_time[2]);
+$vsTripLegInfo[1]->setTripLegInfo(
+	$coupon_number[2],
+	$carrier_code1[2],
+	$flight_number[2],
+	$service_class[2],
+	$orig_city_airport_code[2],
+	$stop_over_code[2],
+	$dest_city_airport_code[2],
+	$fare_basis_code[2],
+	$departure_date1[2],
+	$departure_time[2],
+	$arrival_time[2]
+);
 
 $vsCorpas = new vsCorpas();
 $vsCorpas->setCorpas($conjunction_ticket_number[0], $vsTripLegInfo[0], $control_id[0]);
@@ -73,10 +115,11 @@ $mpgVsLevel23->setVsCorpa($vsCorpai, $vsCorpas);
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>$type,
-     		    'order_id'=>$order_id,
-     		    'txn_number'=>$txn_number,
-   		       );
+$txnArray = array(
+	'type' => $type,
+	'order_id' => $order_id,
+	'txn_number' => $txn_number,
+);
 
 /**************************** Transaction Object *****************************/
 
@@ -91,14 +134,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -118,5 +161,5 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 //print("\nStatusCode = " . $mpgResponse->getStatusCode());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
-?>
+
 

@@ -9,28 +9,31 @@
 ## Example php -q TestIndependentRefund.php store1 yesguy unique_order_id
 ##
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
-$orderid='ord-'.date("dmy-G:i:s");
+$orderid = 'ord-' . date("dmy-G:i:s");
 $amount = '1.00';
-$pan='4242424242424242';
-$expiry_date='2011';
-$crypt='7';
-$dynamic_descriptor='123456';
+$pan = '4242424242424242';
+$expiry_date = '2011';
+$crypt = '7';
+$dynamic_descriptor = '123456';
 
 ## step 1) create transaction array ###
-$txnArray=array('type'=>'ind_refund',
-         'order_id'=>$orderid,
-         'cust_id'=>'my cust id',
-         'amount'=>$amount,
-         'pan'=>$pan,
-         'expdate'=>$expiry_date,
-         'crypt_type'=>$crypt,
-         'dynamic_descriptor'=>$dynamic_descriptor
-           );
+$txnArray = array(
+    'type' => 'ind_refund',
+    'order_id' => $orderid,
+    'cust_id' => 'my cust id',
+    'amount' => $amount,
+    'pan' => $pan,
+    'expdate' => $expiry_date,
+    'crypt_type' => $crypt,
+    'dynamic_descriptor' => $dynamic_descriptor
+);
 
 ## step 2) create a transaction  object passing the array created in
 ## step 1.
@@ -44,10 +47,10 @@ $mpgRequest->setProcCountryCode("CA"); //"US" for sending transaction to US envi
 $mpgRequest->setTestMode(true); //false or comment out this line for production transactions
 
 ## step 4) create mpgHttpsPost object which does an https post ##
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 ## step 5) get an mpgResponse object ##
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 ## step 6) retrieve data using get methods
 
@@ -68,5 +71,5 @@ print("\nTransTime = " . $mpgResponse->getTransTime());
 print("\nTicket = " . $mpgResponse->getTicket());
 print("\nTimedOut = " . $mpgResponse->getTimedOut());
 
-?>
+
 

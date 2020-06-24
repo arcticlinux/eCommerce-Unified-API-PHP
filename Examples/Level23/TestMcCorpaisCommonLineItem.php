@@ -1,30 +1,36 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mcCorpac;
+use Moneris\mcCorpal;
+use Moneris\mcTax;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgMcLevel23;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /**************************** Request Variables *******************************/
 
-$store_id='moneris';
-$api_token='hurgle';
+$store_id = 'moneris';
+$api_token = 'hurgle';
 //$status = 'false';
 
 /************************* Transactional Variables ****************************/
 
-$type='mccorpais';
-$cust_id='CUST13343';
-$order_id='ord-200916-13:29:27';
-$txn_number='66011731632016264132927986-0_11';
+$type = 'mccorpais';
+$cust_id = 'CUST13343';
+$order_id = 'ord-200916-13:29:27';
+$txn_number = '66011731632016264132927986-0_11';
 
-$customer_code1_c ="CustomerCode123";
-$card_acceptor_tax_id_c ="UrTaxId";//Merchant tax id which is mandatory
-$corporation_vat_number_c ="cvn123";
-$freight_amount_c ="1.23";
-$duty_amount_c ="2.34";
-$ship_to_pos_code_c ="M1R 1W5";
-$order_date_c ="141211";
-$customer_vat_number_c ="customervn231";
-$unique_invoice_number_c ="uin567";
-$authorized_contact_name_c ="John Walker";
+$customer_code1_c = "CustomerCode123";
+$card_acceptor_tax_id_c = "UrTaxId";//Merchant tax id which is mandatory
+$corporation_vat_number_c = "cvn123";
+$freight_amount_c = "1.23";
+$duty_amount_c = "2.34";
+$ship_to_pos_code_c = "M1R 1W5";
+$order_date_c = "141211";
+$customer_vat_number_c = "customervn231";
+$unique_invoice_number_c = "uin567";
+$authorized_contact_name_c = "John Walker";
 
 //Tax Details
 $tax_amount_c = array("1.19", "1.29");
@@ -45,11 +51,11 @@ $medical_services_product_number_qualifier_l = array(null, null);
 $product_code1_l = array("pc11", "pc12");
 $item_description_l = array("Good item", "Better item");
 $item_quantity_l = array("4", "5");
-$unit_cost_l =array("1.25", "10.00");
+$unit_cost_l = array("1.25", "10.00");
 $item_unit_measure_l = array("EA", "EA");
-$ext_item_amount_l =array("5.00", "50.00");
-$discount_amount_l =array("1.00", "50.00");
-$commodity_code_l =array("cCode11", "cCode12");
+$ext_item_amount_l = array("5.00", "50.00");
+$discount_amount_l = array("1.00", "50.00");
+$commodity_code_l = array("cCode11", "cCode12");
 $type_of_supply_l = array(null, null);
 $vat_ref_num_l = array(null, null);
 
@@ -86,12 +92,48 @@ $mcTax_l[1]->setTax($tax_amount_l[1], $tax_rate_l[1], $tax_type_l[1], $tax_id_l[
 
 //Create and set McCorpal for each item
 $mcCorpal = new mcCorpal();
-$mcCorpal->setMcCorpal($customer_code1_l[0], $line_item_date_l[0], $ship_date_l[0], $order_date1_l[0], $medical_services_ship_to_health_industry_number_l[0], $contract_number_l[0],
-						$medical_services_adjustment_l[0], $medical_services_product_number_qualifier_l[0], $product_code1_l[0], $item_description_l[0], $item_quantity_l[0],
-						$unit_cost_l[0], $item_unit_measure_l[0], $ext_item_amount_l[0], $discount_amount_l[0], $commodity_code_l[0], $type_of_supply_l[0], $vat_ref_num_l[0], $mcTax_l[0]);
-$mcCorpal->setMcCorpal($customer_code1_l[1], $line_item_date_l[1], $ship_date_l[1], $order_date1_l[1], $medical_services_ship_to_health_industry_number_l[1], $contract_number_l[1],
-						$medical_services_adjustment_l[1], $medical_services_product_number_qualifier_l[1], $product_code1_l[1], $item_description_l[1], $item_quantity_l[1],
-						$unit_cost_l[1], $item_unit_measure_l[1], $ext_item_amount_l[1], $discount_amount_l[1], $commodity_code_l[1], $type_of_supply_l[1], $vat_ref_num_l[1], $mcTax_l[1]);
+$mcCorpal->setMcCorpal(
+	$customer_code1_l[0],
+	$line_item_date_l[0],
+	$ship_date_l[0],
+	$order_date1_l[0],
+	$medical_services_ship_to_health_industry_number_l[0],
+	$contract_number_l[0],
+	$medical_services_adjustment_l[0],
+	$medical_services_product_number_qualifier_l[0],
+	$product_code1_l[0],
+	$item_description_l[0],
+	$item_quantity_l[0],
+	$unit_cost_l[0],
+	$item_unit_measure_l[0],
+	$ext_item_amount_l[0],
+	$discount_amount_l[0],
+	$commodity_code_l[0],
+	$type_of_supply_l[0],
+	$vat_ref_num_l[0],
+	$mcTax_l[0]
+);
+$mcCorpal->setMcCorpal(
+	$customer_code1_l[1],
+	$line_item_date_l[1],
+	$ship_date_l[1],
+	$order_date1_l[1],
+	$medical_services_ship_to_health_industry_number_l[1],
+	$contract_number_l[1],
+	$medical_services_adjustment_l[1],
+	$medical_services_product_number_qualifier_l[1],
+	$product_code1_l[1],
+	$item_description_l[1],
+	$item_quantity_l[1],
+	$unit_cost_l[1],
+	$item_unit_measure_l[1],
+	$ext_item_amount_l[1],
+	$discount_amount_l[1],
+	$commodity_code_l[1],
+	$type_of_supply_l[1],
+	$vat_ref_num_l[1],
+	$mcTax_l[1]
+);
 
 //Create and set McLevel23
 $mpgMcLevel23 = new mpgMcLevel23();
@@ -100,10 +142,11 @@ $mpgMcLevel23->setMcCorpal($mcCorpal);
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>$type,
-     		    'order_id'=>$order_id,
-     		    'txn_number'=>$txn_number,
-   		       );
+$txnArray = array(
+	'type' => $type,
+	'order_id' => $order_id,
+	'txn_number' => $txn_number,
+);
 
 /**************************** Transaction Object *****************************/
 
@@ -118,14 +161,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -145,5 +188,5 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 //print("\nStatusCode = " . $mpgResponse->getStatusCode());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
-?>
+
 

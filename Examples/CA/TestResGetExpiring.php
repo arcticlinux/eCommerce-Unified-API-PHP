@@ -7,20 +7,22 @@
 //There is a max number of attempts set for this transaction per calendar day
 //Can not surpass or will receive Invalid Transaction error
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /**************************** Request Variables *******************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************* Transactional Variables ****************************/
 
-$type='res_get_expiring';
+$type = 'res_get_expiring';
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray = array( 'type'=>$type );
+$txnArray = array('type' => $type);
 
 
 /**************************** Transaction Object *****************************/
@@ -35,11 +37,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nResponseCode = " . $mpgResponse->getResponseCode());
@@ -55,8 +57,7 @@ print("\nPaymentType = " . $mpgResponse->getPaymentType());
 
 $DataKeys = $mpgResponse->getDataKeys();
 
-for($i=0; $i < count($DataKeys); $i++)
-{
+for ($i = 0; $i < count($DataKeys); $i++) {
 	$mpgResponse->setResolveData($DataKeys[$i]);
 
 	print("\n\nData Key = " . $DataKeys[$i]);
@@ -70,9 +71,8 @@ for($i=0; $i < count($DataKeys); $i++)
 	print("\nAvs Street Number = " . $mpgResponse->getResDataAvsStreetNumber());
 	print("\nAvs Street Name = " . $mpgResponse->getResDataAvsStreetName());
 	print("\nAvs Zipcode = " . $mpgResponse->getResDataAvsZipcode());
-
 }
 
 
-?>
+
 

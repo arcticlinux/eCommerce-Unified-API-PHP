@@ -1,18 +1,26 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\axIt106s;
+use Moneris\axIt1Loop;
+use Moneris\axN1Loop;
+use Moneris\axRef;
+use Moneris\axTxi;
+use Moneris\mpgAxLevel23;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /**************************** Request Variables *******************************/
 
-$store_id='moneris';
-$api_token='hurgle';
+$store_id = 'moneris';
+$api_token = 'hurgle';
 //$status = 'false';
 
 /************************* Transactional Variables ****************************/
 
-$type='axcompletion';
-$order_id='ord-210916-12:06:38';
-$comp_amount='62.37';
+$type = 'axcompletion';
+$order_id = 'ord-210916-12:06:38';
+$comp_amount = '62.37';
 $txn_number = '18924-0_11';
 $crypt = '7';
 
@@ -21,19 +29,19 @@ $mpgAxLevel23 = new mpgAxLevel23();
 
 //Create Table 1 with details
 
-$n101 = "R6";	//Entity ID Code
-$n102 = "Retailing Inc. International";	//Name
-$n301 = "919 Oriole Rd.";		//Address Line 1
-$n401 = "Toronto";		//City
-$n402 = "On";			//State or Province
-$n403 = "H1T6W3";			//Postal Code
+$n101 = "R6";    //Entity ID Code
+$n102 = "Retailing Inc. International";    //Name
+$n301 = "919 Oriole Rd.";        //Address Line 1
+$n401 = "Toronto";        //City
+$n402 = "On";            //State or Province
+$n403 = "H1T6W3";            //Postal Code
 
-$ref01 = array("4C", "CR");	//Reference ID Qualifier
+$ref01 = array("4C", "CR");    //Reference ID Qualifier
 $ref02 = array("M5T3A5", "16802309004"); //Reference ID
 
 
-$big04 = "PO7758545";	//Purchase Order Number
-$big05 = "RN0049858";	//Release Number
+$big04 = "PO7758545";    //Purchase Order Number
+$big05 = "RN0049858";    //Release Number
 $big10 = "INV99870E";      //Invoice Number
 
 $axRef1 = new axRef();
@@ -47,27 +55,27 @@ $mpgAxLevel23->setTable1($big04, $big05, $big10, $axN1Loop);
 
 //Create Table 2 with details
 //the sum of the extended amount field (pam05) must equal the level 1 amount field
-	
-$it102 = array("1", "1", "1", "1", "1");	//Line item quantity invoiced
+
+$it102 = array("1", "1", "1", "1", "1");    //Line item quantity invoiced
 $it103 = array("EA", "EA", "EA", "EA", "EA");  //Line item unit or basis of measurement code
 $it104 = array("10.00", "25.00", "8.62", "10.00", "-10.00");   //Line item unit price
-$it105 = array("", "", "", "", "");	//Line item basis of unit price code
-	
+$it105 = array("", "", "", "", "");    //Line item basis of unit price code
+
 $it10618 = array("MG", "MG", "MG", "MG", "MG");   //Product/Service ID qualifier
 $it10719 = array("DJFR4", "JFJ49", "FEF33", "FEE43", "DISCOUNT");   //Product/Service ID (corresponds to it10618)
-	
-$txi01_GST = array("GS", "GS", "GS", "GS", "GS");	//Tax type code
-$txi02_GST = array("0.70", "1.75", "1.00", "0.80","0.00");	//Monetary amount
-$txi03_GST = array("", "", "", "","");		//Percent
-$txi06_GST = array("", "", "", "","");		//Tax exempt code
-	
-$txi01_PST = array("PG", "PG", "PG","PG","PG");	//Tax type code
-$txi02_PST = array("0.80", "2.00", "1.00", "0.80","0.00");	//Monetary amount
-$txi03_PST = array("", "", "", "","");		//Percent
-$txi06_PST = array("", "", "", "","");		//Tax exempt code
 
-$pam05 = array("11.50", "28.75", "10.62", "11.50", "-10.00");	//Extended line-item amount
-$pid05 = array("Stapler", "Lamp", "Bottled Water", "Fountain Pen", "DISCOUNT");	//Line item description
+$txi01_GST = array("GS", "GS", "GS", "GS", "GS");    //Tax type code
+$txi02_GST = array("0.70", "1.75", "1.00", "0.80", "0.00");    //Monetary amount
+$txi03_GST = array("", "", "", "", "");        //Percent
+$txi06_GST = array("", "", "", "", "");        //Tax exempt code
+
+$txi01_PST = array("PG", "PG", "PG", "PG", "PG");    //Tax type code
+$txi02_PST = array("0.80", "2.00", "1.00", "0.80", "0.00");    //Monetary amount
+$txi03_PST = array("", "", "", "", "");        //Percent
+$txi06_PST = array("", "", "", "", "");        //Tax exempt code
+
+$pam05 = array("11.50", "28.75", "10.62", "11.50", "-10.00");    //Extended line-item amount
+$pid05 = array("Stapler", "Lamp", "Bottled Water", "Fountain Pen", "DISCOUNT");    //Line item description
 
 $it106s = array(new axIt106s(), new axIt106s(), new axIt106s(), new axIt106s(), new axIt106s());
 
@@ -115,20 +123,21 @@ $mpgAxLevel23->setTable2($axItLoop);
 //Create Table 3 with details
 
 $taxTbl3 = new axTxi();
-$taxTbl3->setTxi("GS", "4.25","","");	//sum of GST taxes
-$taxTbl3->setTxi("PG", "4.60","","");	//sum of PST taxes
-$taxTbl3->setTxi("TX", "8.85","","");	//sum of all taxes
+$taxTbl3->setTxi("GS", "4.25", "", "");    //sum of GST taxes
+$taxTbl3->setTxi("PG", "4.60", "", "");    //sum of PST taxes
+$taxTbl3->setTxi("TX", "8.85", "", "");    //sum of all taxes
 
 $mpgAxLevel23->setTable3($taxTbl3);
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>$type,
-     		    'order_id'=>$order_id,
-     		    'comp_amount'=>$comp_amount,
-				'txn_number'=> $txn_number,
-				'crypt_type'=>$crypt
-   		       );
+$txnArray = array(
+	'type' => $type,
+	'order_id' => $order_id,
+	'comp_amount' => $comp_amount,
+	'txn_number' => $txn_number,
+	'crypt_type' => $crypt
+);
 
 /**************************** Transaction Object *****************************/
 
@@ -143,14 +152,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -170,5 +179,5 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 //print("\nStatusCode = " . $mpgResponse->getStatusCode());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
-?>
+
 

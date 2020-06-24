@@ -1,28 +1,31 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 //$status = 'false';
 
 /************************ Transaction Variables ******************************/
 
-$order_id='ord-140515-16:26:07';
-$txn_number='36772-0_10';
-$group_ref_num='group_test_1';
-$group_type='financial';
+$order_id = 'ord-140515-16:26:07';
+$txn_number = '36772-0_10';
+$group_ref_num = 'group_test_1';
+$group_type = 'financial';
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array('type'=>'group',
-         'order_id'=>$order_id,
-         'txn_number'=>$txn_number,
-         'group_ref_num'=>$group_ref_num,
-         'group_type'=>$group_type,
-           );
+$txnArray = array(
+    'type' => 'group',
+    'order_id' => $order_id,
+    'txn_number' => $txn_number,
+    'group_ref_num' => $group_ref_num,
+    'group_type' => $group_type,
+);
 
 /************************ Transaction Object *******************************/
 
@@ -36,11 +39,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -63,4 +66,4 @@ print("\nCardLevelResult = " . $mpgResponse->getCardLevelResult());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
 
-?>
+

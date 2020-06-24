@@ -9,34 +9,38 @@
 ## Example php -q TestResPreauthCC.php store3 yesguy unique_order_id cust_id 15.00 1
 ##
 
-require "../../mpgClasses.php";
+use Moneris\CofInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************ Transaction Variables ******************************/
 
-$data_key='ot-H0q8anK6eeHm0NDe9cwXkDvUw';
-$orderid='res-preauth-'.date("dmy-G:i:s");
-$amount='1.00';
-$custid='cust';	//if sent will be submitted, otherwise cust_id from profile will be used
-$crypt_type='1';
+$data_key = 'ot-H0q8anK6eeHm0NDe9cwXkDvUw';
+$orderid = 'res-preauth-' . date("dmy-G:i:s");
+$amount = '1.00';
+$custid = 'cust';    //if sent will be submitted, otherwise cust_id from profile will be used
+$crypt_type = '1';
 
 //$expdate='1512';
 
 /************************ Transaction Array **********************************/
 
-$txnArray =array('type'=>'res_preauth_cc',
-				 'data_key'=>$data_key,
-				 'order_id'=>$orderid,
-				 'cust_id'=>$custid,
-				 'amount'=>$amount,
-				 'crypt_type'=>$crypt_type,
-				 //'expdate=>$expdate,
-				 'dynamic_descriptor'=>'12424'
-				 );
+$txnArray = array(
+	'type' => 'res_preauth_cc',
+	'data_key' => $data_key,
+	'order_id' => $orderid,
+	'cust_id' => $custid,
+	'amount' => $amount,
+	'crypt_type' => $crypt_type,
+	//'expdate=>$expdate,
+	'dynamic_descriptor' => '12424'
+);
 
 /************************ Transaction Object *******************************/
 
@@ -59,11 +63,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost = new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nReceiptId = " . $mpgResponse->getReceiptId());
@@ -98,4 +102,4 @@ print("\nAvs Street Number = " . $mpgResponse->getResDataAvsStreetNumber());
 print("\nAvs Street Name = " . $mpgResponse->getResDataAvsStreetName());
 print("\nAvs Zipcode = " . $mpgResponse->getResDataAvsZipcode());
 
-?>
+

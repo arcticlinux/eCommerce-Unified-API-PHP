@@ -1,11 +1,15 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgAvsInfo;
+use Moneris\mpgCvdInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /******************************* Request Variables ********************************/
 
-$store_id='store5';
-$api_token="yesguy";
+$store_id = 'store5';
+$api_token = "yesguy";
 
 /************************** AVS Variables *****************************/
 
@@ -29,25 +33,25 @@ $cvd_value = '198';
 /********************** AVS Associative Array *************************/
 
 $avsTemplate = array(
-					 'avs_street_number'=>$avs_street_number,
-                     'avs_street_name' =>$avs_street_name,
-                     'avs_zipcode' => $avs_zipcode,
-                     'avs_email' => $avs_email,
-                     'avs_hostname'=>$avs_hostname,
-					 'avs_browser' =>$avs_browser,
-					 'avs_shiptocountry' => $avs_shiptocountry,
-                     'avs_merchprodsku' => $avs_merchprodsku,
-                     'avs_custip'=>$avs_custip,
-					 'avs_custphone' => $avs_custphone
+	'avs_street_number' => $avs_street_number,
+	'avs_street_name' => $avs_street_name,
+	'avs_zipcode' => $avs_zipcode,
+	'avs_email' => $avs_email,
+	'avs_hostname' => $avs_hostname,
+	'avs_browser' => $avs_browser,
+	'avs_shiptocountry' => $avs_shiptocountry,
+	'avs_merchprodsku' => $avs_merchprodsku,
+	'avs_custip' => $avs_custip,
+	'avs_custphone' => $avs_custphone
 
-                    );
+);
 
 /********************** CVD Associative Array *************************/
 
 $cvdTemplate = array(
-					 'cvd_indicator' => $cvd_indicator,
-                     'cvd_value' => $cvd_value
-                    );
+	'cvd_indicator' => $cvd_indicator,
+	'cvd_value' => $cvd_value
+);
 
 /************************** AVS Object ********************************/
 
@@ -59,14 +63,15 @@ $mpgCvdInfo = new mpgCvdInfo ($cvdTemplate);
 
 /*************************** Transaction Associative Array ************************/
 
-$txnArray=array('type'=>'reauth',
-         'order_id'=>'ord-'.date("dmy-G:i:s"),
-         'cust_id'=>'my cust id',
-         'amount'=>'0.80',
-         'orig_order_id'=>'ord-110515-10:55:31',  //original pre-auth order_id
-         'txn_number'=>'31393-0_10',		//original pre-auth txn number
-         'crypt_type'=>'7'
-           );
+$txnArray = array(
+	'type' => 'reauth',
+	'order_id' => 'ord-' . date("dmy-G:i:s"),
+	'cust_id' => 'my cust id',
+	'amount' => '0.80',
+	'orig_order_id' => 'ord-110515-10:55:31',  //original pre-auth order_id
+	'txn_number' => '31393-0_10',        //original pre-auth txn number
+	'crypt_type' => '7'
+);
 
 
 /****************************** Transaction Object *******************************/
@@ -86,12 +91,12 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /****************************** HTTPS Post Object *******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 
 /************************************* Response *********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -114,5 +119,5 @@ print("\nAVSResponse = " . $mpgResponse->getAvsResultCode());
 print("\nCVDResponse = " . $mpgResponse->getCvdResultCode());
 
 
-?>
+
 

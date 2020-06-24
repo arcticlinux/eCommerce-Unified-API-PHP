@@ -1,42 +1,49 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mcCorpac;
+use Moneris\mcCorpai;
+use Moneris\mcCorpas;
+use Moneris\mcTax;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgMcLevel23;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /**************************** Request Variables *******************************/
 
-$store_id='moneris';
-$api_token='hurgle';
+$store_id = 'moneris';
+$api_token = 'hurgle';
 //$status = 'false';
 
 /************************* Transactional Variables ****************************/
 
-$type='mccorpais';
-$cust_id='CUST13343';
-$order_id='ord-200916-17:15:15';
-$txn_number='66011731632016264171516084-0_11';
+$type = 'mccorpais';
+$cust_id = 'CUST13343';
+$order_id = 'ord-200916-17:15:15';
+$txn_number = '66011731632016264171516084-0_11';
 
 //Common Data
-$customer_code1_c ="CustomerCode123";
-$additional_card_acceptor_data_c ="acad1";
-$austin_tetra_number_c ="atn1";
-$naics_code_c ="nc1";
-$card_acceptor_type_c ="0000nnnn";
-$card_acceptor_tax_id_c ="Moneristaxid1";
-$corporation_vat_number_c ="cvn123";
-$card_acceptor_reference_number_c ="carn1";
-$freight_amount1_c ="1.23";
-$duty_amount1_c ="2.34";
-$destination_province_code_c ="ONT";
-$destination_country_code_c ="CAN";
-$ship_from_pos_code_c ="M8X 2X2";
-$ship_to_pos_code_c ="_M1R 1R5";
-$order_date_c ="141211";
-$card_acceptor_vat_number_c ="cavn1";
-$customer_vat_number_c ="customervn231";
-$unique_invoice_number_c ="uin567";
-$commodity_code_c ="paCCC1";
-$authorized_contact_name_c ="John Walker";
-$authorized_contact_phone_c ="416-734-1000";
+$customer_code1_c = "CustomerCode123";
+$additional_card_acceptor_data_c = "acad1";
+$austin_tetra_number_c = "atn1";
+$naics_code_c = "nc1";
+$card_acceptor_type_c = "0000nnnn";
+$card_acceptor_tax_id_c = "Moneristaxid1";
+$corporation_vat_number_c = "cvn123";
+$card_acceptor_reference_number_c = "carn1";
+$freight_amount1_c = "1.23";
+$duty_amount1_c = "2.34";
+$destination_province_code_c = "ONT";
+$destination_country_code_c = "CAN";
+$ship_from_pos_code_c = "M8X 2X2";
+$ship_to_pos_code_c = "_M1R 1R5";
+$order_date_c = "141211";
+$card_acceptor_vat_number_c = "cavn1";
+$customer_vat_number_c = "customervn231";
+$unique_invoice_number_c = "uin567";
+$commodity_code_c = "paCCC1";
+$authorized_contact_name_c = "John Walker";
+$authorized_contact_phone_c = "416-734-1000";
 
 //Common Tax Details
 $tax_amount_c = array("1.19", "1.29");
@@ -46,21 +53,21 @@ $tax_id_c = array("gst1298", "pst1298");
 $tax_included_in_sales_c = array("Y", "N");
 
 //General Passenger Ticket Information
-$passenger_name1_i ="MCC Tester";
-$ticket_number1_i ="1234567890001";
-$travel_agency_name_i ="Moneris Travel";
-$travel_agency_code_i ="MC322";
-$issuing_carrier_i ="2R";
-$customer_code1_i ="passengerabc";
-$issue_date_i ="141210";
-$total_fare_i ="129.45";
-$travel_authorization_code_i ="sde-erdsz-452112";
-$total_fee_i ="10.34";
-$total_taxes_i ="11.56";
-$restricted_ticket_indicator_i ="1";
-$exchange_ticket_amount_i ="13.98";
-$exchange_fee_amount_i ="1.78";
-$iata_client_code_i ="icc2";
+$passenger_name1_i = "MCC Tester";
+$ticket_number1_i = "1234567890001";
+$travel_agency_name_i = "Moneris Travel";
+$travel_agency_code_i = "MC322";
+$issuing_carrier_i = "2R";
+$customer_code1_i = "passengerabc";
+$issue_date_i = "141210";
+$total_fare_i = "129.45";
+$travel_authorization_code_i = "sde-erdsz-452112";
+$total_fee_i = "10.34";
+$total_taxes_i = "11.56";
+$restricted_ticket_indicator_i = "1";
+$exchange_ticket_amount_i = "13.98";
+$exchange_fee_amount_i = "1.78";
+$iata_client_code_i = "icc2";
 
 //Tax Details for passenger
 $tax_amount_i = array("3.28");
@@ -157,12 +164,46 @@ $mcTax_s[1]->setTax($tax_amount_s[1], $tax_rate_s[1], $tax_type_s[1], $tax_id_s[
 
 //Create and set McCorpas for Air Travel Details only
 $mcCorpas = new mcCorpas();
-$mcCorpas->setMcCorpas($travel_date_s[0], $carrier_code1_s[0], $service_class_s[0], $orig_city_airport_code_s[0], $dest_city_airport_code_s[0], $stop_over_code_s[0],
-					$conjunction_ticket_number1_s[0],$exchange_ticket_number1_s[0], $coupon_number1_s[0], $fare_basis_code1_s[0], $flight_number_s[0], $departure_time_s[0],
-					$arrival_time_s[0], $fare_s[0], $fee_s[0], $taxes_s[0], $endorsement_restrictions_s[0], $mcTax_s[0]);
-$mcCorpas->setMcCorpas($travel_date_s[1], $carrier_code1_s[1], $service_class_s[1], $orig_city_airport_code_s[1], $dest_city_airport_code_s[1], $stop_over_code_s[1],
-					$conjunction_ticket_number1_s[1],$exchange_ticket_number1_s[1], $coupon_number1_s[1], $fare_basis_code1_s[1], $flight_number_s[1], $departure_time_s[1],
-					$arrival_time_s[1], $fare_s[1], $fee_s[1], $taxes_s[1], $endorsement_restrictions_s[1], $mcTax_s[1]);
+$mcCorpas->setMcCorpas(
+	$travel_date_s[0],
+	$carrier_code1_s[0],
+	$service_class_s[0],
+	$orig_city_airport_code_s[0],
+	$dest_city_airport_code_s[0],
+	$stop_over_code_s[0],
+	$conjunction_ticket_number1_s[0],
+	$exchange_ticket_number1_s[0],
+	$coupon_number1_s[0],
+	$fare_basis_code1_s[0],
+	$flight_number_s[0],
+	$departure_time_s[0],
+	$arrival_time_s[0],
+	$fare_s[0],
+	$fee_s[0],
+	$taxes_s[0],
+	$endorsement_restrictions_s[0],
+	$mcTax_s[0]
+);
+$mcCorpas->setMcCorpas(
+	$travel_date_s[1],
+	$carrier_code1_s[1],
+	$service_class_s[1],
+	$orig_city_airport_code_s[1],
+	$dest_city_airport_code_s[1],
+	$stop_over_code_s[1],
+	$conjunction_ticket_number1_s[1],
+	$exchange_ticket_number1_s[1],
+	$coupon_number1_s[1],
+	$fare_basis_code1_s[1],
+	$flight_number_s[1],
+	$departure_time_s[1],
+	$arrival_time_s[1],
+	$fare_s[1],
+	$fee_s[1],
+	$taxes_s[1],
+	$endorsement_restrictions_s[1],
+	$mcTax_s[1]
+);
 
 //Create and set McLevel23
 $mpgMcLevel23 = new mpgMcLevel23();
@@ -172,10 +213,11 @@ $mpgMcLevel23->setMcCorpas($mcCorpas);
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>$type,
-     		    'order_id'=>$order_id,
-     		    'txn_number'=>$txn_number,
-   		       );
+$txnArray = array(
+	'type' => $type,
+	'order_id' => $order_id,
+	'txn_number' => $txn_number,
+);
 
 /**************************** Transaction Object *****************************/
 
@@ -190,14 +232,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -217,5 +259,5 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 //print("\nStatusCode = " . $mpgResponse->getStatusCode());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
-?>
+
 

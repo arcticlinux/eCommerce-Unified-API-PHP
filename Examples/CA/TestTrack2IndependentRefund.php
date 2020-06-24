@@ -1,36 +1,35 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 //$status = 'false';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-'.date("dmy-G:i:s");
-$custid='cust id';
-$amount='1.00';
+$orderid = 'ord-' . date("dmy-G:i:s");
+$custid = 'cust id';
+$amount = '1.00';
 
 /*************** Swipe Card and read Track1 and/or Track2 ********************/
 
 $stdin = fopen("php://stdin", 'r');
-$track1 = fgets ($stdin);
+$track1 = fgets($stdin);
 
 $startDelim = ";";
 $firstChar = $track1{0};
 
 $track = '';
 
-if($firstChar==$startDelim)
-{
+if ($firstChar == $startDelim) {
 	$track = $track1;
-}
-else
-{
-	$track2 = fgets ($stdin);
+} else {
+	$track2 = fgets($stdin);
 	$track = $track2;
 }
 
@@ -39,16 +38,17 @@ $track = trim($track);
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array('type'=>'track2_ind_refund',
-         'order_id'=>$orderid,
-         'cust_id'=>$custid,
-         'amount'=>$amount,
-         'track2'=>$track,
-         'pan'=>'',
-         'expdate'=>'',
-         'pos_code'=>'12', 
-		 'dynamic_descriptor'=>'nqa'
-           );
+$txnArray = array(
+	'type' => 'track2_ind_refund',
+	'order_id' => $orderid,
+	'cust_id' => $custid,
+	'amount' => $amount,
+	'track2' => $track,
+	'pan' => '',
+	'expdate' => '',
+	'pos_code' => '12',
+	'dynamic_descriptor' => 'nqa'
+);
 
 /************************ Transaction Object *******************************/
 
@@ -62,14 +62,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost = new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -90,4 +90,4 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
 
-?>
+

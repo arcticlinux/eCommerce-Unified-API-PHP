@@ -1,22 +1,25 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgAvsInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /**************************** Request Variables *******************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 
 /************************* Transactional Variables ****************************/
 
-$type='res_tokenize_cc';  
+$type = 'res_tokenize_cc';
 
 /************************ Transaction Variables ******************************/
 
-$order_id='ord-140515-12:09:18';
-$txn_number='123288-0_25';
+$order_id = 'ord-140515-12:09:18';
+$txn_number = '123288-0_25';
 
-$cust_id='custom1';
+$cust_id = 'custom1';
 $phone = '9999999999';
 $email = 'bob@smith.com';
 $note = 'this is my note';
@@ -27,22 +30,23 @@ $avs_zipcode = '47204';
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>$type,
-		'order_id'=>$order_id,
-		'txn_number'=>$txn_number,
-		'cust_id'=>$cust_id,
-		'phone'=>$phone,
-		'email'=>$email,
-		'note'=>$note
-   		);
+$txnArray = array(
+	'type' => $type,
+	'order_id' => $order_id,
+	'txn_number' => $txn_number,
+	'cust_id' => $cust_id,
+	'phone' => $phone,
+	'email' => $email,
+	'note' => $note
+);
 
 /********************** AVS Associative Array *********************************/
 
 $avsTemplate = array(
-		'avs_street_number' => $avs_street_number,
-		'avs_street_name' => $avs_street_name,
-		'avs_zipcode' => $avs_zipcode
-		);
+	'avs_street_number' => $avs_street_number,
+	'avs_street_name' => $avs_street_name,
+	'avs_zipcode' => $avs_zipcode
+);
 
 /************************** AVS Object ***************************************/
 
@@ -61,11 +65,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nResponseCode = " . $mpgResponse->getResponseCode());
@@ -90,5 +94,5 @@ print("\nAvs Street Number = " . $mpgResponse->getResDataAvsStreetNumber());
 print("\nAvs Street Name = " . $mpgResponse->getResDataAvsStreetName());
 print("\nAvs Zipcode = " . $mpgResponse->getResDataAvsZipcode());
 
-?>
+
 

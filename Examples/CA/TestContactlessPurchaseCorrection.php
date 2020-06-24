@@ -1,23 +1,26 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-080515-14:42:03';
-$txnnumber='20334-0_10';
+$orderid = 'ord-080515-14:42:03';
+$txnnumber = '20334-0_10';
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array('type'=>'contactless_purchasecorrection',
-         'order_id'=>$orderid,
-         'txn_number'=>$txnnumber
-        );
+$txnArray = array(
+    'type' => 'contactless_purchasecorrection',
+    'order_id' => $orderid,
+    'txn_number' => $txnnumber
+);
 
 
 /************************ Transaction Object *******************************/
@@ -32,11 +35,11 @@ $mpgRequest->setTestMode(true);
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print ("\nCardType = " . $mpgResponse->getCardType());
@@ -55,4 +58,3 @@ print("\nTicket = " . $mpgResponse->getTicket());
 print("\nTimedOut = " . $mpgResponse->getTimedOut());
 
 
-?>

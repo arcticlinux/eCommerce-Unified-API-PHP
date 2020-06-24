@@ -1,34 +1,37 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 //$status = 'false';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-'.date("dmy-G:i:s");
-$amount='1.00';
-$pan='4242424242424242';
-$expiry_date='1412';
-$dynamic_descriptor='test';
+$orderid = 'ord-' . date("dmy-G:i:s");
+$amount = '1.00';
+$pan = '4242424242424242';
+$expiry_date = '1412';
+$dynamic_descriptor = 'test';
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array(type=>'purchase',  
-         order_id=>$orderid,
-         cust_id=>'cust',
-         amount=>$amount,
-         pan=>$pan,
-         expdate=>$expiry_date,
-         crypt_type=>'7', 
-         commcard_invoice=>'Invoice 5757FRJ8',
-         commcard_tax_amount=>'0.15',
-         dynamic_descriptor=>$dynamic_descriptor
-           );
+$txnArray = array(
+    type => 'purchase',
+    order_id => $orderid,
+    cust_id => 'cust',
+    amount => $amount,
+    pan => $pan,
+    expdate => $expiry_date,
+    crypt_type => '7',
+    commcard_invoice => 'Invoice 5757FRJ8',
+    commcard_tax_amount => '0.15',
+    dynamic_descriptor => $dynamic_descriptor
+);
 
 
 /************************ Transaction Object *******************************/
@@ -43,14 +46,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -73,4 +76,4 @@ print("\nCardLevelResult = " . $mpgResponse->getCardLevelResult());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
 
-?>
+

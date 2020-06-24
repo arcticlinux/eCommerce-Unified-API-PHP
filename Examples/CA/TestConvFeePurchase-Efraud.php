@@ -2,22 +2,27 @@
 
 /* eSELECTplus US Convenience Fee Account Required this transaction*/
 
-require "../../mpgClasses.php";
+use Moneris\mpgAvsInfo;
+use Moneris\mpgConvFeeInfo;
+use Moneris\mpgCvdInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables ***************************/
 
-$store_id='monca00392';
-$api_token='qYdISUhHiOdfTr1CLNpN';
+$store_id = 'monca00392';
+$api_token = 'qYdISUhHiOdfTr1CLNpN';
 
 /********************* Transactional Variables ************************/
 
-$type='purchase';  
-$order_id='ord-'.date("dmy-G:i:s");
-$cust_id="customer id";
-$amount='10.31';
-$pan='4242424242424242';
-$expiry_date="1511";
-$crypt='7';
+$type = 'purchase';
+$order_id = 'ord-' . date("dmy-G:i:s");
+$cust_id = "customer id";
+$amount = '10.31';
+$pan = '4242424242424242';
+$expiry_date = "1511";
+$crypt = '7';
 
 /************************** AVS Variables *****************************/
 
@@ -33,23 +38,23 @@ $cvd_value = '198';
 /********************** AVS Associative Array *************************/
 
 $avsTemplate = array(
-		     		 'avs_street_number'=>$avs_street_number,
-                     'avs_street_name' =>$avs_street_name,
-                     'avs_zipcode' => $avs_zipcode
-                    );
+	'avs_street_number' => $avs_street_number,
+	'avs_street_name' => $avs_street_name,
+	'avs_zipcode' => $avs_zipcode
+);
 
 /********************** CVD Associative Array *************************/
 
 $cvdTemplate = array(
-		     		 'cvd_indicator' => $cvd_indicator,
-                     'cvd_value' => $cvd_value
-                    );
+	'cvd_indicator' => $cvd_indicator,
+	'cvd_value' => $cvd_value
+);
 
 /********************** ConvFee Associative Array *************************/
 
 $convFeeTemplate = array(
-					     'convenience_fee'=>'1.00'
-					    );
+	'convenience_fee' => '1.00'
+);
 
 /************************** AVS Object ********************************/
 
@@ -65,15 +70,15 @@ $mpgConvFee = new mpgConvFeeInfo($convFeeTemplate);
 
 /***************** Transactional Associative Array ********************/
 
-$txnArray=array(
-		'type'=>$type,
-		'order_id'=>$order_id,
-		'cust_id'=>$cust_id,
-		'amount'=>$amount,
-		'pan'=>$pan,
-		'expdate'=>$expiry_date,
-		'crypt_type'=>$crypt,
-          	);
+$txnArray = array(
+	'type' => $type,
+	'order_id' => $order_id,
+	'cust_id' => $cust_id,
+	'amount' => $amount,
+	'pan' => $pan,
+	'expdate' => $expiry_date,
+	'crypt_type' => $crypt,
+);
 
 /********************** Transaction Object ****************************/
 
@@ -93,11 +98,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /*********************** HTTPS Post Object ****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /*************************** Response *********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print ("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -122,4 +127,4 @@ print("\nFeeAmount = " . $mpgResponse->getFeeAmount());
 print("\nFeeRate = " . $mpgResponse->getFeeRate());
 print("\nFeeType = " . $mpgResponse->getFeeType());
 
-?>
+

@@ -1,18 +1,20 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
-$store_id='moneris';
-$api_token='hurgle';
+$store_id = 'moneris';
+$api_token = 'hurgle';
 
-$txnArray=array(
-	'type'=>'paypass_purchase',
-	'order_id'=>'ord-'.date("dmy-G:i:s"),
-	'cust_id'=>'customer2',
-	'amount'=>'1.00',
-	'crypt_type'=>'7',
-	'mp_request_token'=>'6034e4d0c451b323e50531ffa64f177795b38fc3',
-	'dynamic_descriptor'=>'123456'
+$txnArray = array(
+	'type' => 'paypass_purchase',
+	'order_id' => 'ord-' . date("dmy-G:i:s"),
+	'cust_id' => 'customer2',
+	'amount' => '1.00',
+	'crypt_type' => '7',
+	'mp_request_token' => '6034e4d0c451b323e50531ffa64f177795b38fc3',
+	'dynamic_descriptor' => '123456'
 );
 
 $mpgTxn = new mpgTransaction($txnArray);
@@ -29,11 +31,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 $mpgHttpPost  =new mpgHttpsPostStatus($store_id,$api_token,$status_check,$mpgRequest);
 */
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -54,5 +56,5 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 print("\nStatusCode = " . $mpgResponse->getStatusCode());
 print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
-?>
+
 

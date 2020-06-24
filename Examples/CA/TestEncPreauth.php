@@ -1,32 +1,35 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-'.date("dmy-G:i:s");
-$amount='1.00';
-$enc_track2='02840085000000000416570F44857F2F7867342C66F7CDB57128A48F6E8DD8AD30AC1A6C727B5C400DC3AC8169BF2398B6C664FD3BE40431383131FFFF3141594047A00093031D03';
-$device_type='idtech_bdk';
+$orderid = 'ord-' . date("dmy-G:i:s");
+$amount = '1.00';
+$enc_track2 = '02840085000000000416570F44857F2F7867342C66F7CDB57128A48F6E8DD8AD30AC1A6C727B5C400DC3AC8169BF2398B6C664FD3BE40431383131FFFF3141594047A00093031D03';
+$device_type = 'idtech_bdk';
 
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array('type'=>'enc_preauth',
-         'order_id'=>$orderid,
-         'cust_id'=>'cust',
-         'amount'=>$amount,
-         'enc_track2'=>$enc_track2,
-         'device_type'=>$device_type,
-         'crypt_type'=>'7',
-         'dynamic_descriptor'=>'12345'
-         
-           );
+$txnArray = array(
+    'type' => 'enc_preauth',
+    'order_id' => $orderid,
+    'cust_id' => 'cust',
+    'amount' => $amount,
+    'enc_track2' => $enc_track2,
+    'device_type' => $device_type,
+    'crypt_type' => '7',
+    'dynamic_descriptor' => '12345'
+
+);
 
 
 /************************ Transaction Object *******************************/
@@ -41,14 +44,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -68,4 +71,4 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 print("\nCardLevelResult = " . $mpgResponse->getCardLevelResult());
 print("\nMaskedPan = " . $mpgResponse->getMaskedPan());
 
-?>
+

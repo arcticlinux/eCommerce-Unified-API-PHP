@@ -4,7 +4,11 @@
 ## Example php -q TestPurchase-Recur.php store3 yesguy unique_order_id
 ##
 
-require "../../mpgClasses.php";
+use Moneris\CofInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRecur;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /**************************** Request Variables *******************************/
 
@@ -21,7 +25,7 @@ $startNow = 'true';
 
 /************************* Transactional Variables ****************************/
 
-$orderId = 'ord-'.date("dmy-G:i:s");
+$orderId = 'ord-' . date("dmy-G:i:s");
 $custId = 'student_number';
 $creditCard = '5454545454545454';
 $nowAmount = '10.00';
@@ -30,26 +34,28 @@ $cryptType = '7';
 
 /*********************** Recur Associative Array **********************/
 
-$recurArray = array('recur_unit'=>$recurUnit, // (day | week | month)
-					'start_date'=>$startDate, //yyyy/mm/dd
-					'num_recurs'=>$numRecurs,
-					'start_now'=>$startNow,
-					'period' => $recurInterval,
-					'recur_amount'=> $recurAmount
-					);
+$recurArray = array(
+	'recur_unit' => $recurUnit, // (day | week | month)
+	'start_date' => $startDate, //yyyy/mm/dd
+	'num_recurs' => $numRecurs,
+	'start_now' => $startNow,
+	'period' => $recurInterval,
+	'recur_amount' => $recurAmount
+);
 
 $mpgRecur = new mpgRecur($recurArray);
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>'purchase',
-				'order_id'=>$orderId,
-				'cust_id'=>$custId,
-				'amount'=>$nowAmount,
-				'pan'=>$creditCard,
-				'expdate'=>$expiryDate,
-				'crypt_type'=>$cryptType
-				);
+$txnArray = array(
+	'type' => 'purchase',
+	'order_id' => $orderId,
+	'cust_id' => $custId,
+	'amount' => $nowAmount,
+	'pan' => $creditCard,
+	'expdate' => $expiryDate,
+	'crypt_type' => $cryptType
+);
 
 /**************************** Transaction Object *****************************/
 
@@ -77,11 +83,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost = new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print ("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -101,4 +107,4 @@ print("\nTicket = " . $mpgResponse->getTicket());
 print("\nTimedOut = " . $mpgResponse->getTimedOut());
 print("\nRecurSuccess = " . $mpgResponse->getRecurSuccess());
 print("\nIssuerId = " . $mpgResponse->getIssuerId());
-?>
+

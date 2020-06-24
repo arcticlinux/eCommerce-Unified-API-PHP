@@ -1,11 +1,14 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgCustInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /******************************* Request Variables ********************************/
 
-$store_id='store5';
-$api_token="yesguy";
+$store_id = 'store5';
+$api_token = "yesguy";
 
 /******************* Customer Information Variables ********************/
 
@@ -23,8 +26,8 @@ $tax1 = '1.01';
 $tax2 = '1.02';
 $tax3 = '1.03';
 $shipping_cost = '9.95';
-$email ='Joe@widgets.com';
-$instructions ="Make it fast";
+$email = 'Joe@widgets.com';
+$instructions = "Make it fast";
 
 /*********************** Line Item Variables **************************/
 
@@ -45,40 +48,40 @@ $mpgCustInfo = new mpgCustInfo();
 /********************** Set Customer Information **********************/
 
 $billing = array(
-				 'first_name' => $first_name,
-                 'last_name' => $last_name,
-                 'company_name' => $company_name,
-                 'address' => $address,
-                 'city' => $city,
-                 'province' => $province,
-                 'postal_code' => $postal_code,
-                 'country' => $country,
-                 'phone_number' => $phone_number,
-                 'fax' => $fax,
-                 'tax1' => $tax1,
-                 'tax2' => $tax2,
-                 'tax3' => $tax3,
-                 'shipping_cost' => $shipping_cost
-                 );
+    'first_name' => $first_name,
+    'last_name' => $last_name,
+    'company_name' => $company_name,
+    'address' => $address,
+    'city' => $city,
+    'province' => $province,
+    'postal_code' => $postal_code,
+    'country' => $country,
+    'phone_number' => $phone_number,
+    'fax' => $fax,
+    'tax1' => $tax1,
+    'tax2' => $tax2,
+    'tax3' => $tax3,
+    'shipping_cost' => $shipping_cost
+);
 
 $mpgCustInfo->setBilling($billing);
 
 $shipping = array(
-				 'first_name' => $first_name,
-                 'last_name' => $last_name,
-                 'company_name' => $company_name,
-                 'address' => $address,
-                 'city' => $city,
-                 'province' => $province,
-                 'postal_code' => $postal_code,
-                 'country' => $country,
-                 'phone_number' => $phone_number,
-                 'fax' => $fax,
-                 'tax1' => $tax1,
-                 'tax2' => $tax2,
-                 'tax3' => $tax3,
-                 'shipping_cost' => $shipping_cost
-                 );
+    'first_name' => $first_name,
+    'last_name' => $last_name,
+    'company_name' => $company_name,
+    'address' => $address,
+    'city' => $city,
+    'province' => $province,
+    'postal_code' => $postal_code,
+    'country' => $country,
+    'phone_number' => $phone_number,
+    'fax' => $fax,
+    'tax1' => $tax1,
+    'tax2' => $tax2,
+    'tax3' => $tax3,
+    'shipping_cost' => $shipping_cost
+);
 
 $mpgCustInfo->setShipping($shipping);
 
@@ -88,18 +91,18 @@ $mpgCustInfo->setInstructions($instructions);
 /*********************** Set Line Item Information *********************/
 
 $item[0] = array(
-			   'name'=>$item_name[0],
-               'quantity'=>$item_quantity[0],
-               'product_code'=>$item_product_code[0],
-               'extended_amount'=>$item_extended_amount[0]
-               );
+    'name' => $item_name[0],
+    'quantity' => $item_quantity[0],
+    'product_code' => $item_product_code[0],
+    'extended_amount' => $item_extended_amount[0]
+);
 
 $item[1] = array(
-			   'name'=>$item_name[1],
-               'quantity'=>$item_quantity[1],
-               'product_code'=>$item_product_code[1],
-               'extended_amount'=>$item_extended_amount[1]
-               );
+    'name' => $item_name[1],
+    'quantity' => $item_quantity[1],
+    'product_code' => $item_product_code[1],
+    'extended_amount' => $item_extended_amount[1]
+);
 
 $mpgCustInfo->setItems($item[0]);
 $mpgCustInfo->setItems($item[1]);
@@ -107,15 +110,15 @@ $mpgCustInfo->setItems($item[1]);
 
 /*************************** Transaction Associative Array ************************/
 
-$txnArray=array('type'=>'reauth',
-         'order_id'=>'ord-'.date("dmy-G:i:s"),
-         'cust_id'=>'my cust id',
-         'amount'=>'0.80',
-         'orig_order_id'=>'ord-110515-10:55:31',  //original pre-auth order_id
-         'txn_number'=>'31393-0_10',		//original pre-auth txn number
-         'crypt_type'=>'7'
-           );
-
+$txnArray = array(
+    'type' => 'reauth',
+    'order_id' => 'ord-' . date("dmy-G:i:s"),
+    'cust_id' => 'my cust id',
+    'amount' => '0.80',
+    'orig_order_id' => 'ord-110515-10:55:31',  //original pre-auth order_id
+    'txn_number' => '31393-0_10',        //original pre-auth txn number
+    'crypt_type' => '7'
+);
 
 
 /****************************** Transaction Object *******************************/
@@ -134,12 +137,12 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /****************************** HTTPS Post Object *******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 
 /************************************* Response *********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -160,5 +163,5 @@ print("\nTicket = " . $mpgResponse->getTicket());
 print("\nTimedOut = " . $mpgResponse->getTimedOut());
 
 
-?>
+
 

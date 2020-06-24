@@ -9,19 +9,21 @@
 ## Example php -q TestResIndRefundCC.php store3 yesguy unique_order_id cust_id 15.00 1
 ##
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************ Transaction Variables ******************************/
 
-$data_key='uX6jFwbvCytmG7oT70YVNm0e2';
-$orderid='res-ind-refund-'.date("dmy-G:i:s");
-$custid='';
-$crypt_type='1';
+$data_key = 'uX6jFwbvCytmG7oT70YVNm0e2';
+$orderid = 'res-ind-refund-' . date("dmy-G:i:s");
+$custid = '';
+$crypt_type = '1';
 
 $mcp_version = '1.0';
 $cardholder_amount = '100';
@@ -30,17 +32,18 @@ $mcp_rate_token = 'R1536165545730980';
 
 /************************ Transaction Array **********************************/
 
-$txnArray =array('type'=>'mcp_res_ind_refund_cc',
-				 'data_key'=>$data_key,
-				 'order_id'=>$orderid,
-				 'cust_id'=>$custid,
-				 'crypt_type'=>$crypt_type,
-				'dynamic_descriptor'=>'12346',
-				'mcp_version'=> $mcp_version,
-				'cardholder_amount' => $cardholder_amount,
-				'cardholder_currency_code' => $cardholder_currency_code,
-				'mcp_rate_token' => $mcp_rate_token
-				 );
+$txnArray = array(
+	'type' => 'mcp_res_ind_refund_cc',
+	'data_key' => $data_key,
+	'order_id' => $orderid,
+	'cust_id' => $custid,
+	'crypt_type' => $crypt_type,
+	'dynamic_descriptor' => '12346',
+	'mcp_version' => $mcp_version,
+	'cardholder_amount' => $cardholder_amount,
+	'cardholder_currency_code' => $cardholder_currency_code,
+	'mcp_rate_token' => $mcp_rate_token
+);
 
 /************************ Transaction Object *******************************/
 
@@ -54,11 +57,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost = new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nReceiptId = " . $mpgResponse->getReceiptId());
@@ -100,4 +103,4 @@ print("\nMCPErrorStatusCode = " . $mpgResponse->getMCPErrorStatusCode());
 print("\nMCPErrorMessage = " . $mpgResponse->getMCPErrorMessage());
 print("\nHostId = " . $mpgResponse->getHostId());
 
-?>
+

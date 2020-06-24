@@ -2,26 +2,32 @@
 
 /* eSELECTplus US Convenience Fee Account Required this transaction*/
 
-require "../../mpgClasses.php";
+use Moneris\mpgAchInfo;
+use Moneris\mpgConvFeeInfo;
+use Moneris\mpgCustInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa138';
-$api_token='qatoken';
+$store_id = 'monusqa138';
+$api_token = 'qatoken';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-'.date("dmy-G:i:s");
-$amount='10.00';
+$orderid = 'ord-' . date("dmy-G:i:s");
+$amount = '10.00';
 $custid = 'my cust id';
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array(type=>'ach_debit',  
-         		order_id=>$orderid,
-         		cust_id=>$custid,
-         		amount=>$amount
-          		);
+$txnArray = array(
+	type => 'ach_debit',
+	order_id => $orderid,
+	cust_id => $custid,
+	amount => $amount
+);
 
 /************************** ACH Info Variables *****************************/
 
@@ -41,19 +47,19 @@ $account_type = 'savings';
 /********************** ACH Info Associative Array *************************/
 
 $achTemplate = array(
-		     		 sec =>$sec,
-                     cust_first_name => $cust_first_name,
-                     cust_last_name => $cust_last_name,
-                     cust_address1 => $cust_address1,
-                     cust_address2 => $cust_address2,
-                     cust_city => $cust_city,
-                     cust_state => $cust_state,
-                     cust_zip => $cust_zip,
-                     routing_num => $routing_num,
-                     account_num => $account_num,
-                     check_num => $check_num,
-                     account_type => $account_type
-                    );
+	sec => $sec,
+	cust_first_name => $cust_first_name,
+	cust_last_name => $cust_last_name,
+	cust_address1 => $cust_address1,
+	cust_address2 => $cust_address2,
+	cust_city => $cust_city,
+	cust_state => $cust_state,
+	cust_zip => $cust_zip,
+	routing_num => $routing_num,
+	account_num => $account_num,
+	check_num => $check_num,
+	account_type => $account_type
+);
 
 /************************** ACH Info Object ********************************/
 
@@ -65,67 +71,75 @@ $mpgCustInfo = new mpgCustInfo();
 
 /********************* Set E-mail and Instructions **************/
 
-$email ='Joe@widgets.com';
+$email = 'Joe@widgets.com';
 $mpgCustInfo->setEmail($email);
 
-$instructions ="Make it fast";
+$instructions = "Make it fast";
 $mpgCustInfo->setInstructions($instructions);
 
 /********************* Create Billing Array and set it **********/
 
-$billing = array( first_name => 'Joe',
-		last_name => 'Thompson',
-		company_name => 'Widget Company Inc.',
-		address => '111 Bolts Ave.',
-		city => 'Toronto',
-		province => 'Ontario',
-		postal_code => 'M8T 1T8',
-		country => 'Canada',
-		phone_number => '416-555-5555',
-		fax => '416-555-5555',
-		tax1 => '123.45',
-		tax2 => '12.34',
-		tax3 => '15.45',
-		shipping_cost => '456.23');
+$billing = array(
+	first_name => 'Joe',
+	last_name => 'Thompson',
+	company_name => 'Widget Company Inc.',
+	address => '111 Bolts Ave.',
+	city => 'Toronto',
+	province => 'Ontario',
+	postal_code => 'M8T 1T8',
+	country => 'Canada',
+	phone_number => '416-555-5555',
+	fax => '416-555-5555',
+	tax1 => '123.45',
+	tax2 => '12.34',
+	tax3 => '15.45',
+	shipping_cost => '456.23'
+);
 
 $mpgCustInfo->setBilling($billing);
 
 /********************* Create Shipping Array and set it **********/
 
-$shipping = array(first_name => 'Joe',
-		last_name => 'Thompson',
-		company_name => 'Widget Company Inc.',
-		address => '111 Bolts Ave.',
-		city => 'Toronto',
-		province => 'Ontario',
-		postal_code => 'M8T 1T8',
-		country => 'Canada',
-		phone_number => '416-555-5555',
-		fax => '416-555-5555');
+$shipping = array(
+	first_name => 'Joe',
+	last_name => 'Thompson',
+	company_name => 'Widget Company Inc.',
+	address => '111 Bolts Ave.',
+	city => 'Toronto',
+	province => 'Ontario',
+	postal_code => 'M8T 1T8',
+	country => 'Canada',
+	phone_number => '416-555-5555',
+	fax => '416-555-5555'
+);
 
 $mpgCustInfo->setShipping($shipping);
 
 /********************* Create Item Arrays and set them **********/
 
-$item1 = array (name=>'item 1 name',
-		quantity=>'53',
-		product_code=>'item 1 product code',
-		extended_amount=>'1.00');
+$item1 = array(
+	name => 'item 1 name',
+	quantity => '53',
+	product_code => 'item 1 product code',
+	extended_amount => '1.00'
+);
 
 $mpgCustInfo->setItems($item1);
 
-$item2 = array(name=>'item 2 name',
-		quantity=>'53',
-		product_code=>'item 2 product code',
-		extended_amount=>'1.00');
+$item2 = array(
+	name => 'item 2 name',
+	quantity => '53',
+	product_code => 'item 2 product code',
+	extended_amount => '1.00'
+);
 
 $mpgCustInfo->setItems($item2);
 
 /********************** ConvFee Associative Array *************************/
 
 $convFeeTemplate = array(
-						 convenience_fee=>'2.00'
-						);
+	convenience_fee => '2.00'
+);
 
 /************************** ConvFee Object ********************************/
 
@@ -149,11 +163,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost = new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -176,4 +190,4 @@ print("\nFeeAmount = " . $mpgResponse->getFeeAmount());
 print("\nFeeRate = " . $mpgResponse->getFeeRate());
 print("\nFeeType = " . $mpgResponse->getFeeType());
 
-?>
+

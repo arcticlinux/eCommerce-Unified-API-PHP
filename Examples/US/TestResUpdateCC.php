@@ -1,23 +1,26 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgAvsInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /**************************** Request Variables *******************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 
 /************************* Transactional Variables ****************************/
 
-$type='res_update_cc';  
-$data_key='FjhVlt4020HAVSaOmnaaPACpJ';
-$cust_id='';
+$type = 'res_update_cc';
+$data_key = 'FjhVlt4020HAVSaOmnaaPACpJ';
+$cust_id = '';
 $phone = '';
 $email = '';
 $note = '';
-$pan='4242424242424242';
-$expiry_date='1811';
-$crypt_type='7';
+$pan = '4242424242424242';
+$expiry_date = '1811';
+$crypt_type = '7';
 
 $avs_street_number = '';
 $avs_street_name = '';
@@ -25,24 +28,25 @@ $avs_zipcode = '';
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>$type,
-		'data_key'=>$data_key,
-     		'cust_id'=>$cust_id,
-     		'phone'=>$phone,
-		'email'=>$email,
-		'note'=>$note,
-    		'pan'=>$pan,
-   		'expdate'=>$expiry_date,
-   		'crypt_type'=>$crypt_type
-   		);
+$txnArray = array(
+	'type' => $type,
+	'data_key' => $data_key,
+	'cust_id' => $cust_id,
+	'phone' => $phone,
+	'email' => $email,
+	'note' => $note,
+	'pan' => $pan,
+	'expdate' => $expiry_date,
+	'crypt_type' => $crypt_type
+);
 
 /********************** AVS Associative Array *********************************/
 
 $avsTemplate = array(
-		'avs_street_number' => $avs_street_number,
-		'avs_street_name' => $avs_street_name,
-		'avs_zipcode' => $avs_zipcode
-		);
+	'avs_street_number' => $avs_street_number,
+	'avs_street_name' => $avs_street_name,
+	'avs_zipcode' => $avs_zipcode
+);
 
 /************************** AVS Object ***************************************/
 
@@ -61,11 +65,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nResponseCode = " . $mpgResponse->getResponseCode());
@@ -104,5 +108,5 @@ print("\nMasked Account Num = " . $mpgResponse->getResDataMaskedAccountNum());
 print("\nCheck Num = " . $mpgResponse->getResDataCheckNum());
 print("\nAccount Type = " . $mpgResponse->getResDataAccountType());
 
-?>
+
 

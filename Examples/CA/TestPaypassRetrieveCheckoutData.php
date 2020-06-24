@@ -1,14 +1,17 @@
 <?php
-require "../../mpgClasses.php";
 
-$store_id="moneris";
-$api_token="hurgle";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
-$txnArray=array(
-	'type'=>'paypass_retrieve_checkout_data',
-	'oauth_token'=>'78a5cbdd1e102f14fe7ca9357f34220824b372fc',
-	'oauth_verifier'=>'fb5d463a2dcd4620e8bf67c97446b210bfbe6768',
-	'checkout_resource_url'=>'https://sandbox.api.mastercard.com/online/v3/checkout/267933261'
+$store_id = "moneris";
+$api_token = "hurgle";
+
+$txnArray = array(
+	'type' => 'paypass_retrieve_checkout_data',
+	'oauth_token' => '78a5cbdd1e102f14fe7ca9357f34220824b372fc',
+	'oauth_verifier' => 'fb5d463a2dcd4620e8bf67c97446b210bfbe6768',
+	'checkout_resource_url' => 'https://sandbox.api.mastercard.com/online/v3/checkout/267933261'
 );
 
 $mpgTxn = new mpgTransaction($txnArray);
@@ -17,9 +20,9 @@ $mpgRequest = new mpgRequest($mpgTxn);
 $mpgRequest->setProcCountryCode("CA"); //"US" for sending transaction to US environment
 $mpgRequest->setTestMode(true); //false or comment out this line for production transactions
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 // Response Information
 //
@@ -76,9 +79,10 @@ print("\nCardAccountNumber = " . $mpgResponse->getCardAccountNumber());
 print("\nAuthenticationOptionsEciFlag = " . $mpgResponse->getAuthenticationOptionsEciFlag());
 print("\nAuthenticationOptionsPaResStatus = " . $mpgResponse->getAuthenticationOptionsPaResStatus());
 print("\nAuthenticationOptionsSCEnrollmentStatus = " . $mpgResponse->getAuthenticationOptionsSCEnrollmentStatus());
-print("\nAuthenticationOptionsSignatureVerification = " . $mpgResponse->getAuthenticationOptionsSignatureVerification());
+print("\nAuthenticationOptionsSignatureVerification = " . $mpgResponse->getAuthenticationOptionsSignatureVerification(
+	));
 print("\nAuthenticationOptionsXid = " . $mpgResponse->getAuthenticationOptionsXid());
 print("\nAuthenticationOptionsCAvv = " . $mpgResponse->getAuthenticationOptionsCAvv());
 print("\nTransactionId = " . $mpgResponse->getTransactionId());
-?>
+
 

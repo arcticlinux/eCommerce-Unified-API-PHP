@@ -1,34 +1,37 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 //$status = 'false';
 
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-130515-17:18:31';
-$txnnumber='123167-0_25';
+$orderid = 'ord-130515-17:18:31';
+$txnnumber = '123167-0_25';
 
-$compamount='0.01';
-$dynamic_descriptor='test';
+$compamount = '0.01';
+$dynamic_descriptor = 'test';
 
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array(type=>'completion',  
-         order_id=>$orderid,
-         comp_amount=>$compamount,
-         txn_number=>$txnnumber,
-         crypt_type=>'7', 
-         commcard_invoice=>'Invoice 5757FRJ8',
-         commcard_tax_amount=>'0.15',
-         dynamic_descriptor=>$dynamic_descriptor
-           );
+$txnArray = array(
+    type => 'completion',
+    order_id => $orderid,
+    comp_amount => $compamount,
+    txn_number => $txnnumber,
+    crypt_type => '7',
+    commcard_invoice => 'Invoice 5757FRJ8',
+    commcard_tax_amount => '0.15',
+    dynamic_descriptor => $dynamic_descriptor
+);
 
 
 /************************ Transaction Object *********************************/
@@ -45,14 +48,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ HttpsPost Object **********************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 /************************ Receipt ******************************************/
@@ -74,4 +77,4 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 //print("\nStatusCode = " . $mpgResponse->getStatusCode());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
-?>
+

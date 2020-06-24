@@ -1,18 +1,21 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRecur;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 
 /************************ Transaction Variables ******************************/
 
-$data_key='ejJJON45q6M8maeptQyzJWc35';
-$orderid='ord-'.date("dmy-G:i:s");
-$amount='1.00';
-$custid='cust';
+$data_key = 'ejJJON45q6M8maeptQyzJWc35';
+$orderid = 'ord-' . date("dmy-G:i:s");
+$amount = '1.00';
+$custid = 'cust';
 
 /************************** Recur Variables *********************************/
 
@@ -25,24 +28,26 @@ $startNow = 'true';
 
 /****************************** Recur Array *********************************/
 
-$recurArray = array(recur_unit=>$recurUnit,  // (day | week | month)
-					start_date=>$startDate, //yyyy/mm/dd
-					num_recurs=>$numRecurs,
-					start_now=>$startNow,
-					period => $recurInterval,
-					recur_amount=> $recurAmount
-					);
+$recurArray = array(
+	recur_unit => $recurUnit,  // (day | week | month)
+	start_date => $startDate, //yyyy/mm/dd
+	num_recurs => $numRecurs,
+	start_now => $startNow,
+	period => $recurInterval,
+	recur_amount => $recurAmount
+);
 
 $mpgRecur = new mpgRecur($recurArray);
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array(type=>'res_purchase_ach',  
-				data_key=>$data_key,
-		        order_id=>$orderid,
-		        cust_id=>$custid,
-		        amount=>$amount
-		         );
+$txnArray = array(
+	type => 'res_purchase_ach',
+	data_key => $data_key,
+	order_id => $orderid,
+	cust_id => $custid,
+	amount => $amount
+);
 
 /************************ Transaction Object *******************************/
 
@@ -57,11 +62,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost = new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nReceiptId = " . $mpgResponse->getReceiptId());
@@ -100,4 +105,4 @@ print("\nMasked Account Num = " . $mpgResponse->getResDataMaskedAccountNum());
 print("\nCheck Num = " . $mpgResponse->getResDataCheckNum());
 print("\nAccount Type = " . $mpgResponse->getResDataAccountType());
 
-?>
+

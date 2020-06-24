@@ -2,25 +2,29 @@
 
 ## Example php -q TestPurchase-VBV.php "moneris" store
 
-require "../../mpgClasses.php";
+use Moneris\CofInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRecur;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /******************************* Request Variables ********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /****************************** Transactional Variables ***************************/
 
-$type='cavv_purchase';
-$order_id='ord-'.date("dmy-G:i:s");
-$cust_id='CUST887763';
-$amount='10.00';
-$pan="4242424242424242";
-$expiry_date="1511";
-$cavv='AAABBJg0VhI0VniQEjRWAAAAAAA=';
+$type = 'cavv_purchase';
+$order_id = 'ord-' . date("dmy-G:i:s");
+$cust_id = 'CUST887763';
+$amount = '10.00';
+$pan = "4242424242424242";
+$expiry_date = "1511";
+$cavv = 'AAABBJg0VhI0VniQEjRWAAAAAAA=';
 $crypt_type = '7';
 $wallet_indicator = "APP";
-$dynamic_descriptor='123456';
+$dynamic_descriptor = '123456';
 
 /********************************* Recur Variables ****************************/
 $recurUnit = 'month'; //eom - end of month
@@ -32,29 +36,30 @@ $startNow = 'true';
 
 /*************************** Transaction Associative Array ************************/
 
-$txnArray=array(
-			'type'=>$type,
-	        'order_id'=>$order_id,
-			'cust_id'=>$cust_id,
-	        'amount'=>$amount,
-	        'pan'=>$pan,
-	        'expdate'=>$expiry_date,
-			'cavv'=>$cavv,
-			'crypt_type'=>$crypt_type, //mandatory for AMEX only
-			//'wallet_indicator'=>$wallet_indicator, //set only for wallet transactions. e.g. APPLE PAY
-			//'network'=> "Interac", //set only for Interac e-commerce
-			//'data_type'=> "3DSecure", //set only for Interac e-commerce
-			'dynamic_descriptor'=>$dynamic_descriptor
-	           );
+$txnArray = array(
+	'type' => $type,
+	'order_id' => $order_id,
+	'cust_id' => $cust_id,
+	'amount' => $amount,
+	'pan' => $pan,
+	'expdate' => $expiry_date,
+	'cavv' => $cavv,
+	'crypt_type' => $crypt_type, //mandatory for AMEX only
+	//'wallet_indicator'=>$wallet_indicator, //set only for wallet transactions. e.g. APPLE PAY
+	//'network'=> "Interac", //set only for Interac e-commerce
+	//'data_type'=> "3DSecure", //set only for Interac e-commerce
+	'dynamic_descriptor' => $dynamic_descriptor
+);
 
 /*********************** Recur Associative Array **********************/
 
-$recurArray = array('recur_unit'=>$recurUnit, // (day | week | month)
-		'start_date'=>$startDate, //yyyy/mm/dd
-		'num_recurs'=>$numRecurs,
-		'start_now'=>$startNow,
-		'period' => $recurInterval,
-		'recur_amount'=> $recurAmount
+$recurArray = array(
+	'recur_unit' => $recurUnit, // (day | week | month)
+	'start_date' => $startDate, //yyyy/mm/dd
+	'num_recurs' => $numRecurs,
+	'start_now' => $startNow,
+	'period' => $recurInterval,
+	'recur_amount' => $recurAmount
 );
 
 $mpgRecur = new mpgRecur($recurArray);
@@ -84,11 +89,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /****************************** HTTPS Post Object *******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************************* Response *********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -109,5 +114,5 @@ print("\nCavvResultCode = " . $mpgResponse->getCavvResultCode());
 print("\nIssuerId = " . $mpgResponse->getIssuerId());
 
 
-?>
+
 

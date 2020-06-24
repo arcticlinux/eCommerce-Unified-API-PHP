@@ -1,13 +1,16 @@
 <?php
-require "../../mpgClasses.php";
 
-$store_id="moneris";
-$api_token="hurgle";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
-$txnArray=array(
-	'type'=>'paypass_send_shopping_cart',
-	'subtotal'=>'1.00',
-	'suppress_shipping_address'=>'true'
+$store_id = "moneris";
+$api_token = "hurgle";
+
+$txnArray = array(
+	'type' => 'paypass_send_shopping_cart',
+	'subtotal' => '1.00',
+	'suppress_shipping_address' => 'true'
 );
 
 $mpgTxn = new mpgTransaction($txnArray);
@@ -16,9 +19,9 @@ $mpgRequest = new mpgRequest($mpgTxn);
 $mpgRequest->setProcCountryCode("CA"); //"US" for sending transaction to US environment
 $mpgRequest->setTestMode(true); //false or comment out this line for production transactions
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 // Response Information
 //
@@ -41,5 +44,5 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 print("\nMPRequestToken = " . $mpgResponse->getMPRequestToken());
 print("\nMPRedirectUrl = " . $mpgResponse->getMPRedirectUrl());
 
-?>
+
 

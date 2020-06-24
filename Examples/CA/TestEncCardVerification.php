@@ -1,17 +1,21 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgAvsInfo;
+use Moneris\mpgCvdInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-'.date("dmy-G:i:s");
-$enc_track2='02840085000000000416570F44857F2F7867342C66F7CDB57128A48F6E8DD8AD30AC1A6C727B5C400DC3AC8169BF2398B6C664FD3BE40431383131FFFF3141594047A00093031D03';
-$device_type='idtech_bdk';
+$orderid = 'ord-' . date("dmy-G:i:s");
+$enc_track2 = '02840085000000000416570F44857F2F7867342C66F7CDB57128A48F6E8DD8AD30AC1A6C727B5C400DC3AC8169BF2398B6C664FD3BE40431383131FFFF3141594047A00093031D03';
+$device_type = 'idtech_bdk';
 
 /************************** AVS Variables *****************************/
 
@@ -27,17 +31,17 @@ $cvd_value = '198';
 /********************** AVS Associative Array *************************/
 
 $avsTemplate = array(
-		     		 'avs_street_number'=>$avs_street_number,
-                     'avs_street_name' =>$avs_street_name,
-                     'avs_zipcode' => $avs_zipcode
-                    );
+	'avs_street_number' => $avs_street_number,
+	'avs_street_name' => $avs_street_name,
+	'avs_zipcode' => $avs_zipcode
+);
 
 /********************** CVD Associative Array *************************/
 
 $cvdTemplate = array(
-		     		 'cvd_indicator' => $cvd_indicator,
-                     'cvd_value' => $cvd_value
-                    );
+	'cvd_indicator' => $cvd_indicator,
+	'cvd_value' => $cvd_value
+);
 
 /************************** AVS Object ********************************/
 
@@ -49,13 +53,14 @@ $mpgCvdInfo = new mpgCvdInfo ($cvdTemplate);
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array('type'=>'enc_card_verification',
-         	'order_id'=>$orderid,
-         	'cust_id'=>'cust',
-         	'enc_track2'=>$enc_track2,
-         	'device_type'=>$device_type,
-			'crypt_type'=>'7'
-           );
+$txnArray = array(
+	'type' => 'enc_card_verification',
+	'order_id' => $orderid,
+	'cust_id' => 'cust',
+	'enc_track2' => $enc_track2,
+	'device_type' => $device_type,
+	'crypt_type' => '7'
+);
 
 
 /************************ Transaction Object *******************************/
@@ -75,13 +80,12 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
-
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -100,4 +104,4 @@ print("\nTicket = " . $mpgResponse->getTicket());
 print("\nTimedOut = " . $mpgResponse->getTimedOut());
 print("\nCardLevelResult = " . $mpgResponse->getCardLevelResult());
 print("\nMaskedPan = " . $mpgResponse->getMaskedPan());
-?>
+

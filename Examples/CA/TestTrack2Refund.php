@@ -1,29 +1,32 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 //$status = 'false';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-110515-15:44:10';
-$amount='1.00';
-$txnnumber='32087-1_10';
-$dynamic_descriptor='nqa';
+$orderid = 'ord-110515-15:44:10';
+$amount = '1.00';
+$txnnumber = '32087-1_10';
+$dynamic_descriptor = 'nqa';
 
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array('type'=>'track2_refund',
-         'order_id'=>$orderid,
-         'amount'=>$amount,
-         'txn_number'=>$txnnumber,
-         'dynamic_descriptor'=>$dynamic_descriptor
-           );
+$txnArray = array(
+    'type' => 'track2_refund',
+    'order_id' => $orderid,
+    'amount' => $amount,
+    'txn_number' => $txnnumber,
+    'dynamic_descriptor' => $dynamic_descriptor
+);
 
 /************************ Transaction Object *******************************/
 
@@ -37,14 +40,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -64,4 +67,4 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 //print("\nStatusCode = " . $mpgResponse->getStatusCode());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
-?>
+

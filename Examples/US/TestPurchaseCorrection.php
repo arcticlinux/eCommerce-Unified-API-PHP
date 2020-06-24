@@ -1,26 +1,29 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 //$status = 'false';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-130515-17:15:14';
-$txnnumber='837155-0_25';
-$dynamic_descriptor='test';
+$orderid = 'ord-130515-17:15:14';
+$txnnumber = '837155-0_25';
+$dynamic_descriptor = 'test';
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array(type=>'purchasecorrection',  
-         order_id=>$orderid,
-         txn_number=>$txnnumber,
-         crypt_type=>'7', 
-        );
+$txnArray = array(
+    type => 'purchasecorrection',
+    order_id => $orderid,
+    txn_number => $txnnumber,
+    crypt_type => '7',
+);
 
 
 /************************ Transaction Object *******************************/
@@ -35,7 +38,7 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
@@ -43,7 +46,7 @@ $mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print ("\nCardType = " . $mpgResponse->getCardType());
@@ -64,4 +67,4 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
 
-?>
+

@@ -1,17 +1,23 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\CofInfo;
+use Moneris\mpgAvsInfo;
+use Moneris\mpgCvdInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
-$store_id='store5';
-$api_token="yesguy";
+$store_id = 'store5';
+$api_token = "yesguy";
 
-$txnArray=array('type'=>'card_verification',
-         'order_id'=>'ord-'.date("dmy-G:i:s"),
-         'cust_id'=>'my cust id',
-         'pan'=>'4242424242424242',
-         'expdate'=>'1512',
-         'crypt_type'=>'7'
-           );
+$txnArray = array(
+    'type' => 'card_verification',
+    'order_id' => 'ord-' . date("dmy-G:i:s"),
+    'cust_id' => 'my cust id',
+    'pan' => '4242424242424242',
+    'expdate' => '1512',
+    'crypt_type' => '7'
+);
 
 $mpgTxn = new mpgTransaction($txnArray);
 
@@ -29,8 +35,8 @@ $cvd_value = '198';
 /********************** AVS Associative Array *************************/
 
 $avsTemplate = array(
-    'avs_street_number'=>$avs_street_number,
-    'avs_street_name' =>$avs_street_name,
+    'avs_street_number' => $avs_street_number,
+    'avs_street_name' => $avs_street_name,
     'avs_zipcode' => $avs_zipcode
 );
 
@@ -63,9 +69,9 @@ $mpgRequest = new mpgRequest($mpgTxn);
 $mpgRequest->setProcCountryCode("CA"); //"US" for sending transaction to US environment
 $mpgRequest->setTestMode(true); //false or comment out this line for production transactions
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -85,5 +91,5 @@ print("\nTicket = " . $mpgResponse->getTicket());
 print("\nTimedOut = " . $mpgResponse->getTimedOut());
 print("\nIssuerId = " . $mpgResponse->getIssuerId());
 
-?>
+
 

@@ -1,29 +1,32 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /**************************** Request Variables *******************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************* Transactional Variables ****************************/
 
-$type='res_temp_tokenize';
-$order_id='res-purch-110515-12:56:49';
-$txn_number='31570-0_10';
-$duration='60'; //seconds
-$crypt_type='7';
+$type = 'res_temp_tokenize';
+$order_id = 'res-purch-110515-12:56:49';
+$txn_number = '31570-0_10';
+$duration = '60'; //seconds
+$crypt_type = '7';
 
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>$type,
-				'order_id'=>$order_id,
-				'txn_number'=>$txn_number,
-				'duration'=>$duration,
-				'crypt_type'=>$crypt_type
-   			    );
+$txnArray = array(
+	'type' => $type,
+	'order_id' => $order_id,
+	'txn_number' => $txn_number,
+	'duration' => $duration,
+	'crypt_type' => $crypt_type
+);
 
 /**************************** Transaction Object *****************************/
 
@@ -37,11 +40,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nResponseCode = " . $mpgResponse->getResponseCode());
@@ -66,5 +69,5 @@ print("\nAvs Street Number = " . $mpgResponse->getResDataAvsStreetNumber());
 print("\nAvs Street Name = " . $mpgResponse->getResDataAvsStreetName());
 print("\nAvs Zipcode = " . $mpgResponse->getResDataAvsZipcode());
 
-?>
+
 

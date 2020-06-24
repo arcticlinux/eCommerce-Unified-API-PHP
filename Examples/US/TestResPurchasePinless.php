@@ -1,31 +1,34 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 
 /************************ Transaction Variables ******************************/
 
-$data_key='y5SJ5IWTrRdAH8UT5UFWfm3DO';
-$orderid='ord-'.date("dmy-G:i:s");
-$amount='1.00';
-$custid='cust';
-$intended_use='1';
+$data_key = 'y5SJ5IWTrRdAH8UT5UFWfm3DO';
+$orderid = 'ord-' . date("dmy-G:i:s");
+$amount = '1.00';
+$custid = 'cust';
+$intended_use = '1';
 $p_account_number = '23456789';
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array(type=>'res_purchase_pinless',  
-				data_key=>$data_key,
-		        order_id=>$orderid,
-		        cust_id=>$custid,
-		        amount=>$amount,
-		        intended_use=>$intended_use,
-		        p_account_number=>$p_account_number
-		         );
+$txnArray = array(
+	type => 'res_purchase_pinless',
+	data_key => $data_key,
+	order_id => $orderid,
+	cust_id => $custid,
+	amount => $amount,
+	intended_use => $intended_use,
+	p_account_number => $p_account_number
+);
 
 
 /************************ Transaction Object *******************************/
@@ -40,11 +43,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nReceiptId = " . $mpgResponse->getReceiptId());
@@ -74,4 +77,4 @@ print("\nExp Date = " . $mpgResponse->getResDataExpDate());
 print("\nPresentation Type = " . $mpgResponse->getResDataPresentationType());
 print("\nP Account Number = " . $mpgResponse->getResDataPAccountNumber());
 
-?>
+

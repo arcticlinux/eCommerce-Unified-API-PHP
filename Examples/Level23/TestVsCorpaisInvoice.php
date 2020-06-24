@@ -1,19 +1,24 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
+use Moneris\mpgVsLevel23;
+use Moneris\vsPurcha;
+use Moneris\vsPurchl;
 
 /**************************** Request Variables *******************************/
 
-$store_id='moneris';
-$api_token='hurgle';
+$store_id = 'moneris';
+$api_token = 'hurgle';
 //$status = 'false';
 
 /************************* Transactional Variables ****************************/
 
-$type='vscorpais';
-$cust_id='CUST13343';
-$order_id='ord-160916-15:31:39';
-$txn_number='18306-0_11';
+$type = 'vscorpais';
+$cust_id = 'CUST13343';
+$order_id = 'ord-160916-15:31:39';
+$txn_number = '18306-0_11';
 
 $buyer_name = "Buyer Manager";
 $local_tax_rate = "13.00";
@@ -27,7 +32,7 @@ $des_cou_code = "CAN";
 $vat_ref_num = "VAT12345";
 $tax_treatment = "3";//3 = Gross prices given with tax information provided at invoice level
 $gst_hst_freight_amount = "0.00";
-$gst_hst_freight_rate = "13.00";  
+$gst_hst_freight_rate = "13.00";
 
 $item_com_code = array("X3101", "X84802");
 $product_code = array("CHR123", "DDSK200");
@@ -58,8 +63,30 @@ $vsPurcha->setGstHstFreightRate($gst_hst_freight_rate);
 
 //Create and set VsPurchl
 $vsPurchl = new vsPurchl();
-$vsPurchl->setVsPurchl($item_com_code[0], $product_code[0], $item_description[0], $item_quantity[0], $item_uom[0], $unit_cost[0], $vat_tax_amt[0], $vat_tax_rate[0], $discount_treatmentL[0], $discount_amtL[0]);
-$vsPurchl->setVsPurchl($item_com_code[1], $product_code[1], $item_description[1], $item_quantity[1], $item_uom[1], $unit_cost[1], $vat_tax_amt[1], $vat_tax_rate[1], $discount_treatmentL[1], $discount_amtL[1]);
+$vsPurchl->setVsPurchl(
+	$item_com_code[0],
+	$product_code[0],
+	$item_description[0],
+	$item_quantity[0],
+	$item_uom[0],
+	$unit_cost[0],
+	$vat_tax_amt[0],
+	$vat_tax_rate[0],
+	$discount_treatmentL[0],
+	$discount_amtL[0]
+);
+$vsPurchl->setVsPurchl(
+	$item_com_code[1],
+	$product_code[1],
+	$item_description[1],
+	$item_quantity[1],
+	$item_uom[1],
+	$unit_cost[1],
+	$vat_tax_amt[1],
+	$vat_tax_rate[1],
+	$discount_treatmentL[1],
+	$discount_amtL[1]
+);
 
 //Create and set VsLevel23
 $mpgVsLevel23 = new mpgVsLevel23();
@@ -67,10 +94,11 @@ $mpgVsLevel23->setVsPurch($vsPurcha, $vsPurchl);
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>$type,
-     		    'order_id'=>$order_id,
-     		    'txn_number'=>$txn_number,
-   		       );
+$txnArray = array(
+	'type' => $type,
+	'order_id' => $order_id,
+	'txn_number' => $txn_number,
+);
 
 /**************************** Transaction Object *****************************/
 
@@ -85,14 +113,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -112,5 +140,5 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 //print("\nStatusCode = " . $mpgResponse->getStatusCode());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
-?>
+
 

@@ -8,20 +8,25 @@
 ## Example php -q TestResPurchaseCC-Recur.php store3 yesguy unique_order_id 1.00
 ##
 
-require "../../mpgClasses.php";
+use Moneris\CofInfo;
+use Moneris\mpgCvdInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRecur;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************ Transaction Variables ******************************/
 
-$data_key='t8RCndWBNFNt4Dx32CCnl2tlz';
-$orderid='res-purch-'.date("dmy-G:i:s");
-$amount='1.00';
-$custid='cust';
-$crypt_type='1';
+$data_key = 't8RCndWBNFNt4Dx32CCnl2tlz';
+$orderid = 'res-purch-' . date("dmy-G:i:s");
+$amount = '1.00';
+$custid = 'cust';
+$crypt_type = '1';
 
 /************************** CVD Variables *****************************/
 
@@ -31,9 +36,9 @@ $cvd_value = '198';
 /********************** CVD Associative Array *************************/
 
 $cvdTemplate = array(
-		     		 'cvd_indicator' => $cvd_indicator,
-                     'cvd_value' => $cvd_value
-                    );
+	'cvd_indicator' => $cvd_indicator,
+	'cvd_value' => $cvd_value
+);
 
 $mpgCvdInfo = new mpgCvdInfo ($cvdTemplate);
 
@@ -48,25 +53,27 @@ $startNow = 'true';
 
 /****************************** Recur Array **************************/
 
-$recurArray = array('recur_unit'=>$recurUnit,  // (day | week | month)
-					'start_date'=>$startDate, //yyyy/mm/dd
-					'num_recurs'=>$numRecurs,
-					'start_now'=>$startNow,
-					'period' => $recurInterval,
-					'recur_amount'=> $recurAmount
-					);
+$recurArray = array(
+	'recur_unit' => $recurUnit,  // (day | week | month)
+	'start_date' => $startDate, //yyyy/mm/dd
+	'num_recurs' => $numRecurs,
+	'start_now' => $startNow,
+	'period' => $recurInterval,
+	'recur_amount' => $recurAmount
+);
 
 $mpgRecur = new mpgRecur($recurArray);
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array('type'=>'res_purchase_cc',
-				'data_key'=>$data_key,
-		        'order_id'=>$orderid,
-		        'cust_id'=>$custid,
-		        'amount'=>$amount,
-		        'crypt_type'=>$crypt_type
-		         );
+$txnArray = array(
+	'type' => 'res_purchase_cc',
+	'data_key' => $data_key,
+	'order_id' => $orderid,
+	'cust_id' => $custid,
+	'amount' => $amount,
+	'crypt_type' => $crypt_type
+);
 
 /************************ Transaction Object *******************************/
 
@@ -91,11 +98,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nReceiptId = " . $mpgResponse->getReceiptId());
@@ -131,4 +138,4 @@ print("\nAvs Street Number = " . $mpgResponse->getResDataAvsStreetNumber());
 print("\nAvs Street Name = " . $mpgResponse->getResDataAvsStreetName());
 print("\nAvs Zipcode = " . $mpgResponse->getResDataAvsZipcode());
 
-?>
+

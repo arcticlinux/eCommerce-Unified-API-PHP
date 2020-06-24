@@ -1,19 +1,22 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgSessionAccountInfo;
+use Moneris\riskHttpsPost;
+use Moneris\riskRequest;
+use Moneris\riskTransaction;
 
 
 /************************ Request Variables ***************************/
 
-$store_id='moneris';
-$api_token='hurgle';
+$store_id = 'moneris';
+$api_token = 'hurgle';
 
 /********************* Transactional Variables ************************/
 
-$type='session_query';
-$order_id='risktest-'.date("dmy-G:i:s");
-$session_id='abc123';
-$service_type='session';
+$type = 'session_query';
+$order_id = 'risktest-' . date("dmy-G:i:s");
+$session_id = 'abc123';
+$service_type = 'session';
 //$event_type='login';
 
 /************************** SessionAccountInfo Variables *****************************/
@@ -30,7 +33,7 @@ $pan = '4242424242424242';
 $account_address_street1 = '3300 Bloor St W';
 $account_address_street2 = '4th Flr West Tower';
 $account_address_city = 'Toronto';
-$account_address_state ='Ontario';
+$account_address_state = 'Ontario';
 $account_address_country = 'Canada';
 $account_address_zip = 'M8X2X2';
 $shipping_address_street1 = '3300 Bloor St W';
@@ -50,18 +53,17 @@ $transaction_amount = '1.00';
 $transaction_currency = '124';
 
 
-
 /********************** SessionAccountInfo Associative Array *************************/
 
 $sessionAccountInfoTemplate = array
-		(
-			'account_login'=>$account_login,
-                     	'password_hash' =>$password_hash,
-	                'account_number' => $account_number,
-                     	'account_name' => $account_name,
-                     	'account_email'=>$account_email,
-			'pan' =>$pan
-                );
+(
+	'account_login' => $account_login,
+	'password_hash' => $password_hash,
+	'account_number' => $account_number,
+	'account_name' => $account_name,
+	'account_email' => $account_email,
+	'pan' => $pan
+);
 
 
 /************************** SessionAccountInfo Object ********************************/
@@ -71,12 +73,12 @@ $mpgSessionAccountInfo = new mpgSessionAccountInfo ($sessionAccountInfoTemplate)
 
 /***************** Transactional Associative Array ********************/
 
-$txnArray=array(
-			'type'=>$type,
-       			'order_id'=>$order_id,
-       			'session_id'=>$session_id,
-       			'service_type'=>$service_type
-          		);
+$txnArray = array(
+	'type' => $type,
+	'order_id' => $order_id,
+	'session_id' => $session_id,
+	'service_type' => $service_type
+);
 
 /********************** Transaction Object ****************************/
 
@@ -93,35 +95,32 @@ $riskRequest->setTestMode(true);
 
 /*********************** HTTPS Post Object ****************************/
 
-$riskHttpsPost  =new riskHttpsPost($store_id,$api_token,$riskRequest);
+$riskHttpsPost = new riskHttpsPost($store_id, $api_token, $riskRequest);
 
 /***************************** Response ******************************/
 
-$riskResponse=$riskHttpsPost->getRiskResponse();
+$riskResponse = $riskHttpsPost->getRiskResponse();
 
-//print("\nResponse = " . $riskResponse); 
+//print("\nResponse = " . $riskResponse);
 
 print("\nResponseCode = " . $riskResponse->getResponseCode());
 print("\nMessage = " . $riskResponse->getMessage());
 
 $results = $riskResponse->getResults();
 
-foreach($results as $key => $value)
-{
-	print("\n".$key ." = ". $value);
+foreach ($results as $key => $value) {
+	print("\n" . $key . " = " . $value);
 }
 
 $rules = $riskResponse->getRules();
 
 //print_r($rules);
 
-foreach ($rules as $i) 
-{
-    	foreach ($i as $key => $value) 
-    	{
-    		echo "\n$key = $value";
-    	}
+foreach ($rules as $i) {
+	foreach ($i as $key => $value) {
+		echo "\n$key = $value";
+	}
 }
 
-?>
+
 

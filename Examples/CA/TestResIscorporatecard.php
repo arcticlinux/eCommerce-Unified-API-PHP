@@ -4,23 +4,26 @@
 ## Example php -q TestResIscorporatecard.php moneris hurgle
 ##
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /**************************** Request Variables *******************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************* Transactional Variables ****************************/
 
-$type='res_iscorporatecard';
-$data_key='t8RCndWBNFNt4Dx32CCnl2tlz';
+$type = 'res_iscorporatecard';
+$data_key = 't8RCndWBNFNt4Dx32CCnl2tlz';
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>$type,
-				'data_key'=>$data_key
-   			    );
+$txnArray = array(
+	'type' => $type,
+	'data_key' => $data_key
+);
 
 
 /**************************** Transaction Object *****************************/
@@ -35,11 +38,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nCorporateCard = " . $mpgResponse->getCorporateCard());
@@ -55,5 +58,5 @@ print("\nTxnNumber = " . $mpgResponse->getTxnNumber());
 print("\nTimedOut = " . $mpgResponse->getTimedOut());
 print("\nResSuccess = " . $mpgResponse->getResSuccess());
 print("\nPaymentType = " . $mpgResponse->getPaymentType());
-?>
+
 

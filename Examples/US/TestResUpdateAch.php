@@ -1,35 +1,39 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgAchInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 
 /************************ Transaction Variables ******************************/
 
-$type='res_update_ach';  
-$data_key='ejJJON45q6M8maeptQyzJWc35';
-$cust_id='';
+$type = 'res_update_ach';
+$data_key = 'ejJJON45q6M8maeptQyzJWc35';
+$cust_id = '';
 $phone = '0000000000';
 $email = '';
 $note = 'note';
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array('type'=>$type,
-				'data_key'=>$data_key,
-				'cust_id'=>$cust_id,
-				'phone'=>$phone,
-				'email'=>$email,
-				'note'=>$note
-          		);
+$txnArray = array(
+	'type' => $type,
+	'data_key' => $data_key,
+	'cust_id' => $cust_id,
+	'phone' => $phone,
+	'email' => $email,
+	'note' => $note
+);
 
 /************************** ACH Info Variables *****************************/
 
 //Mandatory payment details
-$sec = 'ccd';				//only ppd|ccd|web are supported
+$sec = 'ccd';                //only ppd|ccd|web are supported
 $routing_num = '123456789';
 $account_num = '999999999';
 $account_type = 'checking';
@@ -49,19 +53,19 @@ $cust_zip = '';
 /********************** ACH Info Associative Array *************************/
 
 $achTemplate = array(
-		     sec =>$sec,
-		     cust_first_name => $cust_first_name,
-                     cust_last_name => $cust_last_name,
-                     cust_address1 => $cust_address1,
-                     cust_address2 => $cust_address2,
-                     cust_city => $cust_city,
-                     cust_state => $cust_state,
-                     cust_zip => $cust_zip,
-                     routing_num => $routing_num,
-                     account_num => $account_num,
-                     check_num => $check_num,
-                     account_type => $account_type
-                    );
+	sec => $sec,
+	cust_first_name => $cust_first_name,
+	cust_last_name => $cust_last_name,
+	cust_address1 => $cust_address1,
+	cust_address2 => $cust_address2,
+	cust_city => $cust_city,
+	cust_state => $cust_state,
+	cust_zip => $cust_zip,
+	routing_num => $routing_num,
+	account_num => $account_num,
+	check_num => $check_num,
+	account_type => $account_type
+);
 
 /************************** ACH Info Object ********************************/
 
@@ -84,11 +88,11 @@ $mpgRequest->setTestMode(true);
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost = new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nResponseCode = " . $mpgResponse->getResponseCode());
@@ -127,4 +131,4 @@ print("\nMasked Account Num = " . $mpgResponse->getResDataMaskedAccountNum());
 print("\nCheck Num = " . $mpgResponse->getResDataCheckNum());
 print("\nAccount Type = " . $mpgResponse->getResDataAccountType());
 
-?>
+

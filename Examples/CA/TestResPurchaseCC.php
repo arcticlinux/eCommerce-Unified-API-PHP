@@ -8,33 +8,37 @@
 ## Example php -q TestResPurchaseCC.php store3 yesguy unique_order_id 1.00
 ##
 
-require "../../mpgClasses.php";
+use Moneris\CofInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************ Transaction Variables ******************************/
 
-$data_key='ot-odvn9lBTZm0lSWyQgansBqQi3';
-$orderid='res-purch-'.date("dmy-G:i:s");
-$amount='1.00';
-$custid='cust';
-$crypt_type='1';
+$data_key = 'ot-odvn9lBTZm0lSWyQgansBqQi3';
+$orderid = 'res-purch-' . date("dmy-G:i:s");
+$amount = '1.00';
+$custid = 'cust';
+$crypt_type = '1';
 
-$expdate='1911'; //For Temp Tokens only
+$expdate = '1911'; //For Temp Tokens only
 /************************ Transaction Array **********************************/
 
-$txnArray=array('type'=>'res_purchase_cc',
-				'data_key'=>$data_key,
-		        'order_id'=>$orderid,
-		        'cust_id'=>$custid,
-		        'amount'=>$amount,
-		        'crypt_type'=>$crypt_type,
-				//'expdate'=>$expdate,
-				'dynamic_descriptor'=>'12484'
-		        );
+$txnArray = array(
+	'type' => 'res_purchase_cc',
+	'data_key' => $data_key,
+	'order_id' => $orderid,
+	'cust_id' => $custid,
+	'amount' => $amount,
+	'crypt_type' => $crypt_type,
+	//'expdate'=>$expdate,
+	'dynamic_descriptor' => '12484'
+);
 
 
 /************************ Transaction Object *******************************/
@@ -58,11 +62,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
@@ -98,4 +102,4 @@ print("\nAvs Street Number = " . $mpgResponse->getResDataAvsStreetNumber());
 print("\nAvs Street Name = " . $mpgResponse->getResDataAvsStreetName());
 print("\nAvs Zipcode = " . $mpgResponse->getResDataAvsZipcode());
 
-?>
+

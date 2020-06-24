@@ -1,22 +1,24 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
-$store_id='store5';
-$api_token='yesguy';
-$orderid='ord-150816-12:36:20';
-$txnnumber='117816-0_10';
-$dynamic_descriptor='1234';
+$store_id = 'store5';
+$api_token = 'yesguy';
+$orderid = 'ord-150816-12:36:20';
+$txnnumber = '117816-0_10';
+$dynamic_descriptor = '1234';
 
 ## step 1) create transaction hash ###
-$txnArray=array('type'=>'mcp_purchasecorrection',
-         'txn_number'=>$txnnumber,
-         'order_id'=>$orderid,
-         'crypt_type'=>'7',
-         'cust_id'=>'customer ID',
-         'dynamic_descriptor'=>$dynamic_descriptor
-        );
-
+$txnArray = array(
+    'type' => 'mcp_purchasecorrection',
+    'txn_number' => $txnnumber,
+    'order_id' => $orderid,
+    'crypt_type' => '7',
+    'cust_id' => 'customer ID',
+    'dynamic_descriptor' => $dynamic_descriptor
+);
 
 
 ## step 2) create a transaction  object passing the array created in
@@ -31,10 +33,10 @@ $mpgRequest->setProcCountryCode("CA"); //"US" for sending transaction to US envi
 $mpgRequest->setTestMode(true); //false or comment out this line for production transactions
 
 ## step 4) create mpgHttpsPost object which does an https post ##
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 ## step 5) get an mpgResponse object ##
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 ## step 6) retrieve data using get methods
 
@@ -62,5 +64,5 @@ print("\nMCPRate = " . $mpgResponse->getMCPRate());
 print("\nMCPErrorStatusCode = " . $mpgResponse->getMCPErrorStatusCode());
 print("\nMCPErrorMessage = " . $mpgResponse->getMCPErrorMessage());
 print("\nHostId = " . $mpgResponse->getHostId());
-?>
+
 

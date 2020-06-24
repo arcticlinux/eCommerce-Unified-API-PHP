@@ -1,18 +1,20 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='store5';
-$api_token='yesguy';
+$store_id = 'store5';
+$api_token = 'yesguy';
 
 /************************ Transaction Variables ******************************/
 
-$data_key='ot-DYm9m3m00lCgN2b1Kk6mEb7np';
-$amount='1.00';
+$data_key = 'ot-DYm9m3m00lCgN2b1Kk6mEb7np';
+$amount = '1.00';
 $xid = sprintf("%'920d", rand());
-$MD = $xid."mycardinfo".$amount;
+$MD = $xid . "mycardinfo" . $amount;
 $merchantUrl = "www.mystoreurl.com";
 $accept = "true";
 $userAgent = "Mozilla";
@@ -20,16 +22,17 @@ $expdate = "1712"; //For Temp Tokens only
 
 /************************ Transaction Array **********************************/
 
-$txnArray =array('type'=>'res_mpitxn',
-				 'data_key'=>$data_key,
-				 //'expdate'=>$expdate,
-				 'amount'=>$amount,
-				 'xid'=>$xid,
-				 'MD'=>$MD,
-				 'merchantUrl'=>$merchantUrl,
-				 'accept'=>$accept,
-				 'userAgent'=>$userAgent
-				 );
+$txnArray = array(
+	'type' => 'res_mpitxn',
+	'data_key' => $data_key,
+	//'expdate'=>$expdate,
+	'amount' => $amount,
+	'xid' => $xid,
+	'MD' => $MD,
+	'merchantUrl' => $merchantUrl,
+	'accept' => $accept,
+	'userAgent' => $userAgent
+);
 
 /************************ Transaction Object *******************************/
 
@@ -43,21 +46,18 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost = new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nMpiSuccess = " . $mpgResponse->getMpiSuccess());
 
-if($mpgResponse->getMpiSuccess() == "true")
-{
+if ($mpgResponse->getMpiSuccess() == "true") {
 	print($mpgResponse->getMpiInLineForm());
-}
-else
-{
+} else {
 	print("\nMpiMessage = " . $mpgResponse->getMpiMessage());
 }
 
-?>
+

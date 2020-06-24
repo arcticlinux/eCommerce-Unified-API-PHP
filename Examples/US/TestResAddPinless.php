@@ -1,36 +1,39 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 
 /************************ Transaction Variables ******************************/
 
-$type='res_add_pinless';  
-$cust_id='my cust id';
+$type = 'res_add_pinless';
+$cust_id = 'my cust id';
 $phone = '416-555-5555';
 $email = 'bob@smith.com';
 $note = 'this is my note';
-$pan='4242424242424242';
-$expiry_date='1509';
+$pan = '4242424242424242';
+$expiry_date = '1509';
 $presentation_type = 'W';
 $p_account_number = '1234567890123456789012345';
 
 /************************ Transaction Array **********************************/
 
-$txnArray = array ( 'type'=>$type,
-				 	'cust_id'=>$cust_id,
-					'phone'=>$phone,
-					'email'=>$email,
-					'note'=>$note,
-					'pan'=>$pan,
-				 	'expdate'=>$expiry_date,
-				 	'presentation_type'=>$presentation_type,
-				 	'p_account_number'=>$p_account_number
-           		  );
+$txnArray = array(
+	'type' => $type,
+	'cust_id' => $cust_id,
+	'phone' => $phone,
+	'email' => $email,
+	'note' => $note,
+	'pan' => $pan,
+	'expdate' => $expiry_date,
+	'presentation_type' => $presentation_type,
+	'p_account_number' => $p_account_number
+);
 
 
 /************************ Transaction Object *******************************/
@@ -45,11 +48,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nResponseCode = " . $mpgResponse->getResponseCode());
@@ -72,4 +75,4 @@ print("\nExp Date = " . $mpgResponse->getResDataExpDate());
 print("\nPresentation Type = " . $mpgResponse->getResDataPresentationType());
 print("\nP Account Number = " . $mpgResponse->getResDataPAccountNumber());
 
-?>
+

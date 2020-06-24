@@ -1,34 +1,37 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-'.date("dmy-G:i:s");
-$amount='1.00';
-$pan="4242424242424242";
-$expiry_date="1112";
-$track2=";4242424242424242=13051013280008648804?";
+$orderid = 'ord-' . date("dmy-G:i:s");
+$amount = '1.00';
+$pan = "4242424242424242";
+$expiry_date = "1112";
+$track2 = ";4242424242424242=13051013280008648804?";
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array(type=>'contactless_purchase',  
-         order_id=>$orderid,
-         cust_id=>'cust',
-         amount=>$amount,
-         pan=>$pan,
-         expdate=>$expiry_date,
-         commcard_invoice=>'Invoice 5757FRJ8',
-         commcard_tax_amount=>'0.15',
-         pos_code=>'00',
-         dynamic_descriptor=>'1234324123',
-         track2=>$track2
-           );
+$txnArray = array(
+    type => 'contactless_purchase',
+    order_id => $orderid,
+    cust_id => 'cust',
+    amount => $amount,
+    pan => $pan,
+    expdate => $expiry_date,
+    commcard_invoice => 'Invoice 5757FRJ8',
+    commcard_tax_amount => '0.15',
+    pos_code => '00',
+    dynamic_descriptor => '1234324123',
+    track2 => $track2
+);
 
 
 /************************ Transaction Object *******************************/
@@ -43,11 +46,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -66,4 +69,4 @@ print("\nTicket = " . $mpgResponse->getTicket());
 print("\nTimedOut = " . $mpgResponse->getTimedOut());
 
 
-?>
+

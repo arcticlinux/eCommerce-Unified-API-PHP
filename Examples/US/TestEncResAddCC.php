@@ -1,45 +1,49 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgAvsInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /**************************** Request Variables *******************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 
 /************************* Transactional Variables ****************************/
 
-$type='enc_res_add_cc';  
-$cust_id='customer3';
+$type = 'enc_res_add_cc';
+$cust_id = 'customer3';
 $phone = '4169996578';
 $email = 'bob@smith.com';
 $note = 'this is my note';
 $enc_track2 = '02840085000000000416D705CCD4BAC5929D8D1EBF0644C234FBC65476C1D6C9E94B9BED3E4D1A791C3F4FC61C1800486A8A6B6CCAA00431353131FFFF3141594047A000960D5D03';
 $device_type = 'idtech';
-$crypt_type='7';
+$crypt_type = '7';
 $avs_street_number = '112';
 $avs_street_name = 'lakeshore blvd';
 $avs_zipcode = '15645';
 
 /*********************** Transactional Associative Array **********************/
 
-$txnArray=array('type'=>$type,
-		'cust_id'=>$cust_id,
-		'phone'=>$phone,
-		'email'=>$email,
-		'note'=>$note,
-		'enc_track2'=>$enc_track2,
-		'device_type'=>$device_type,
-		'crypt_type'=>$crypt_type
-	    );
+$txnArray = array(
+	'type' => $type,
+	'cust_id' => $cust_id,
+	'phone' => $phone,
+	'email' => $email,
+	'note' => $note,
+	'enc_track2' => $enc_track2,
+	'device_type' => $device_type,
+	'crypt_type' => $crypt_type
+);
 
 /********************** AVS Associative Array *********************************/
 
 $avsTemplate = array(
-		'avs_street_number' => $avs_street_number,
-		'avs_street_name' => $avs_street_name,
-		'avs_zipcode' => $avs_zipcode
-		);
+	'avs_street_number' => $avs_street_number,
+	'avs_street_name' => $avs_street_name,
+	'avs_zipcode' => $avs_zipcode
+);
 
 /************************** AVS Object ***************************************/
 
@@ -60,11 +64,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /***************************** HTTPS Post Object *****************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /******************************* Response ************************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nDataKey = " . $mpgResponse->getDataKey());
 print("\nResponseCode = " . $mpgResponse->getResponseCode());
@@ -89,5 +93,5 @@ print("\nAvs Street Number = " . $mpgResponse->getResDataAvsStreetNumber());
 print("\nAvs Street Name = " . $mpgResponse->getResDataAvsStreetName());
 print("\nAvs Zipcode = " . $mpgResponse->getResDataAvsZipcode());
 
-?>
+
 

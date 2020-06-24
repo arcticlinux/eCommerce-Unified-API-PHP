@@ -1,19 +1,22 @@
 <?php
 
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
-$store_id='store5';
-$api_token= 'yesguy';
-$orderid= 'ord-'.date("dmy-G:i:s");
+$store_id = 'store5';
+$api_token = 'yesguy';
+$orderid = 'ord-' . date("dmy-G:i:s");
 
 ## step 1) create transaction hash ###
-$txnArray=array('type'=>'idebit_purchase',
-		 'order_id'=>$orderid,
-		 'cust_id'=>'my cust id',
-         'amount'=>'50.00',
-         'idebit_track2'=>'3728024906540591206=0609AAAAAAAAAAAAA'
-        );
+$txnArray = array(
+	'type' => 'idebit_purchase',
+	'order_id' => $orderid,
+	'cust_id' => 'my cust id',
+	'amount' => '50.00',
+	'idebit_track2' => '3728024906540591206=0609AAAAAAAAAAAAA'
+);
 
 
 ## step 2) create a transaction  object passing the hash created in
@@ -28,10 +31,10 @@ $mpgRequest->setProcCountryCode("CA"); //"US" for sending transaction to US envi
 $mpgRequest->setTestMode(true); //false or comment out this line for production transactions
 
 ## step 4) create mpgHttpsPost object which does an https post ##
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 ## step 5) get an mpgResponse object ##
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 ## step 6) retrieve data using get methods
 
@@ -51,5 +54,5 @@ print("\nTransTime = " . $mpgResponse->getTransTime());
 print("\nTicket = " . $mpgResponse->getTicket());
 print("\nTimedOut = " . $mpgResponse->getTimedOut());
 
-?>
+
 

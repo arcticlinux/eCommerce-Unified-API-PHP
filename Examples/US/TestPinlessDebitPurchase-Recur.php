@@ -1,34 +1,38 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRecur;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-'.date("dmy-G:i:s");
-$amount='1.00';
-$pan='4242424242424242';
-$expiry_date='1511';
+$orderid = 'ord-' . date("dmy-G:i:s");
+$amount = '1.00';
+$pan = '4242424242424242';
+$expiry_date = '1511';
 $presentation_type = 'X';
 $intended_use = '0';
 $p_account_number = '1234567890';
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array(type=>'pinless_debit_purchase',  
-				 order_id=>$orderid,
-				 cust_id=>'cust',				//This field is optional
-				 amount=>$amount,
-				 pan=>$pan,
-				 expdate=>$expiry_date,			//This field is optional
-				 presentation_type=>$presentation_type,
-				 intended_use=>$intended_use,
-				 p_account_number=>$p_account_number
-           		);
+$txnArray = array(
+	type => 'pinless_debit_purchase',
+	order_id => $orderid,
+	cust_id => 'cust',                //This field is optional
+	amount => $amount,
+	pan => $pan,
+	expdate => $expiry_date,            //This field is optional
+	presentation_type => $presentation_type,
+	intended_use => $intended_use,
+	p_account_number => $p_account_number
+);
 
 /************************** Recur Variables *****************************/
 
@@ -41,13 +45,14 @@ $startNow = 'true';
 
 /****************************** Recur Array **************************/
 
-$recurArray = array(recur_unit=>$recurUnit,  // (day | week | month)
-	start_date=>$startDate, //yyyy/mm/dd
-	num_recurs=>$numRecurs,
-	start_now=>$startNow,
+$recurArray = array(
+	recur_unit => $recurUnit,  // (day | week | month)
+	start_date => $startDate, //yyyy/mm/dd
+	num_recurs => $numRecurs,
+	start_now => $startNow,
 	period => $recurInterval,
-	recur_amount=> $recurAmount
-	);
+	recur_amount => $recurAmount
+);
 
 /****************************** Recur Object **************************/
 
@@ -69,11 +74,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -93,4 +98,4 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 print("\nRecurSuccess = " . $mpgResponse->getRecurSuccess());
 
 
-?>
+

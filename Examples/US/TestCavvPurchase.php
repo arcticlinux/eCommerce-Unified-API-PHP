@@ -1,42 +1,46 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgAvsInfo;
+use Moneris\mpgCvdInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /******************************* Request Variables ********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 //$status = 'false';
 
 /****************************** Transactional Variables ***************************/
 
-$type='cavv_purchase';  
-$order_id="ord-".date("dmy-G:i:s");
-$cust_id='customer1';
-$amount='1.00';
-$pan='4242424242424242';
-$expiry_date='0912';
-$cavv='AAABBJg0VhI0VniQEjRWAAAAAAA';
+$type = 'cavv_purchase';
+$order_id = "ord-" . date("dmy-G:i:s");
+$cust_id = 'customer1';
+$amount = '1.00';
+$pan = '4242424242424242';
+$expiry_date = '0912';
+$cavv = 'AAABBJg0VhI0VniQEjRWAAAAAAA';
 //$cavv='AAABBJg0VhI0VniQEjRWAAAAAAA=';
-$commcard_invoice='Invoice 5757FRJ8';
-$commcard_tax_amount='1.00';
+$commcard_invoice = 'Invoice 5757FRJ8';
+$commcard_tax_amount = '1.00';
 $crypt_type = '7';
 
 /*************************** Transaction Associative Array ************************/
 
-$txnArray=array(
-				type=>$type,
-	    		order_id=>$order_id,
-				cust_id=>$cust_id,
-	    		amount=>$amount,
-	    		pan=>$pan,
-	    		expdate=>$expiry_date,
-				cavv=>$cavv,
-				commcard_invoice=>$commcard_invoice,
-				commcard_tax_amount=>$commcard_tax_amount,
-				crypt_type=>$crypt_type, //mandatory for AMEX only
-				dynamic_descriptor=>'test'
-	       		);
+$txnArray = array(
+	type => $type,
+	order_id => $order_id,
+	cust_id => $cust_id,
+	amount => $amount,
+	pan => $pan,
+	expdate => $expiry_date,
+	cavv => $cavv,
+	commcard_invoice => $commcard_invoice,
+	commcard_tax_amount => $commcard_tax_amount,
+	crypt_type => $crypt_type, //mandatory for AMEX only
+	dynamic_descriptor => 'test'
+);
 
 /************************** AVS Variables *****************************/
 
@@ -52,17 +56,17 @@ $cvd_value = '198';
 /********************** AVS Associative Array *************************/
 
 $avsTemplate = array(
-		     		 avs_street_number=>$avs_street_number,
-                     avs_street_name =>$avs_street_name,
-                     avs_zipcode => $avs_zipcode
-                    );
+	avs_street_number => $avs_street_number,
+	avs_street_name => $avs_street_name,
+	avs_zipcode => $avs_zipcode
+);
 
 /********************** CVD Associative Array *************************/
 
 $cvdTemplate = array(
-		     		 cvd_indicator => $cvd_indicator,
-                     cvd_value => $cvd_value
-                    );
+	cvd_indicator => $cvd_indicator,
+	cvd_value => $cvd_value
+);
 
 /************************** AVS Object ********************************/
 
@@ -89,14 +93,14 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /****************************** HTTPS Post Object *******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 //Status check example
 //$mpgHttpPost = new mpgHttpsPostStatus($store_id,$api_token,$status,$mpgRequest);
 
 /************************************* Response *********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 print("\nCardType = " . $mpgResponse->getCardType());
 print("\nTransAmount = " . $mpgResponse->getTransAmount());
@@ -118,4 +122,4 @@ print("\nCavvResultCode = " . $mpgResponse->getCavvResultCode());
 //print("\nStatusMessage = " . $mpgResponse->getStatusMessage());
 
 
-?>
+

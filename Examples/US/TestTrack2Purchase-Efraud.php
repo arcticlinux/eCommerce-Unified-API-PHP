@@ -1,17 +1,20 @@
 <?php
 
-require "../../mpgClasses.php";
+use Moneris\mpgAvsInfo;
+use Moneris\mpgHttpsPost;
+use Moneris\mpgRequest;
+use Moneris\mpgTransaction;
 
 /************************ Request Variables **********************************/
 
-$store_id='monusqa002';
-$api_token='qatoken';
+$store_id = 'monusqa002';
+$api_token = 'qatoken';
 
 /************************ Transaction Variables ******************************/
 
-$orderid='ord-'.date("dmy-G:i:s");
-$custid='customerid';
-$amount='1.00';
+$orderid = 'ord-' . date("dmy-G:i:s");
+$custid = 'customerid';
+$amount = '1.00';
 
 /************************** AVS Variables *****************************/
 
@@ -23,10 +26,10 @@ $avs_zipcode = 'M1M1M1';
 /********************** AVS Associative Array *************************/
 
 $avsTemplate = array(
-		     		 avs_street_number=>$avs_street_number,
-                     avs_street_name =>$avs_street_name,
-                     avs_zipcode => $avs_zipcode
-                    );
+	avs_street_number => $avs_street_number,
+	avs_street_name => $avs_street_name,
+	avs_zipcode => $avs_zipcode
+);
 
 
 /************************** AVS Object ********************************/
@@ -37,20 +40,17 @@ $mpgAvsInfo = new mpgAvsInfo ($avsTemplate);
 /************ Swipe card and read Track1 and/or Track2 ***********************/
 
 $stdin = fopen("php://stdin", 'r');
-$track1 = fgets ($stdin);
+$track1 = fgets($stdin);
 
 $startDelim = ";";
 $firstChar = $track1{0};
 
 $track = '';
 
-if($firstChar==$startDelim)
-{
+if ($firstChar == $startDelim) {
 	$track = $track1;
-}
-else
-{
-	$track2 = fgets ($stdin);
+} else {
+	$track2 = fgets($stdin);
 	$track = $track2;
 }
 
@@ -59,17 +59,18 @@ $track = trim($track);
 
 /************************ Transaction Array **********************************/
 
-$txnArray=array(type=>'track2_purchase',  
-         order_id=>$orderid,
-         cust_id=>$custid,
-         amount=>$amount,
-         track2=>$track,
-         pan=>'',
-         expdate=>'',
-         commcard_invoice=>'Invoice 5757FRJ8',
-         commcard_tax_amount=>'0.15',
-         pos_code=>'12'
-           );
+$txnArray = array(
+	type => 'track2_purchase',
+	order_id => $orderid,
+	cust_id => $custid,
+	amount => $amount,
+	track2 => $track,
+	pan => '',
+	expdate => '',
+	commcard_invoice => 'Invoice 5757FRJ8',
+	commcard_tax_amount => '0.15',
+	pos_code => '12'
+);
 
 
 /************************ Transaction Object *******************************/
@@ -88,11 +89,11 @@ $mpgRequest->setTestMode(true); //false or comment out this line for production 
 
 /************************ mpgHttpsPost Object ******************************/
 
-$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+$mpgHttpPost = new mpgHttpsPost($store_id, $api_token, $mpgRequest);
 
 /************************ Response Object **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+$mpgResponse = $mpgHttpPost->getMpgResponse();
 
 
 print("\nCardType = " . $mpgResponse->getCardType());
@@ -112,4 +113,4 @@ print("\nTimedOut = " . $mpgResponse->getTimedOut());
 print("\nAVSResponse = " . $mpgResponse->getAvsResultCode());
 print("\nCardLevelResult = " . $mpgResponse->getCardLevelResult());
 
-?>
+
