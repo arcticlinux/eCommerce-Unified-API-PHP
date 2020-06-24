@@ -9,7 +9,7 @@
     "sort-packages": true
   },
   "require": {
-    "php": ">=5.5",
+    "php": ">=7.1",
     "ext-curl": "*",
     "ext-xml": "*"
   },
