@@ -2,12 +2,21 @@
   "name": "arcticlinux/e-commerce-unified-api-php",
   "description": "Unified PHP SDK for Moneris",
   "type": "library",
+  "config": {
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true
+  },
   "require": {
     "php": ">=5.5",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-xml": "*"
   },
   "autoload": {
-    "classmap": ["mpgClasses.php"]
+    "classmap": [
+      "mpgClasses.php"
+    ]
   }
 }
 
