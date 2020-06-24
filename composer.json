@@ -14,9 +14,9 @@
     "ext-xml": "*"
   },
   "autoload": {
-    "classmap": [
-      "mpgClasses.php"
-    ]
+    "psr-4": {
+      "Moneris\\": "src/"
+    }
   }
 }
 
